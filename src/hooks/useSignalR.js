@@ -3,7 +3,7 @@ import * as signalR from "@microsoft/signalr";
 
 // const HUB_URL = "https://localhost:7016/hubs/parkmeter";
 
-const HUB_URL =`${process.env.REACT_APP_SIGNALR_URL}/hubs/parkmeter`;
+const HUB_URL =`${process.env.VITE_SIGNALR_URL}/hubs/parkmeter`;
 
 export function useSignalR(handlers = {}) {
   const connectionRef = useRef(null);

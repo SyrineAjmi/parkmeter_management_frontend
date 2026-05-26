@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import styles from "./ConfigModal.module.css";
 
 //const BASE_URL = "https://localhost:7016/api";
-const BASE_URL = `${process.env.REACT_APP_API_URL}/api`;
+const BASE_URL = `${process.env.VITE_API_URL}/api`;
 
 function authHeaders() {
   const user = JSON.parse(localStorage.getItem("parkmeter_user") || "{}");
