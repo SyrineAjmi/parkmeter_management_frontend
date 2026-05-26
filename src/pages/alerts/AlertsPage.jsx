@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import AppLayout from "../../components/layout/AppLayout";
 import { useSignalR } from "../../hooks/useSignalR";
-import styles from "./AlertsPage.module.css";
+import styles from "./Alertspage.module.css";
 import {
   ALERT_TYPE_LABELS,
   ALERT_PRIORITY_COLORS,

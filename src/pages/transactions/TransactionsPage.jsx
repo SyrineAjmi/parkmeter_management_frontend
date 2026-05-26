@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import AppLayout from "../../components/layout/AppLayout";
 import { useSignalR } from "../../hooks/useSignalR";
-import styles from "./TransactionsPage.module.css";
+import styles from "./Transactionspage.module.css";
 import Pagination from "../../components/ui/Pagination/Pagination";
 import { fetchAllParkmeters } from "../../api/dashboard.api";
 

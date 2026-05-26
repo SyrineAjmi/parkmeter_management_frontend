@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import styles from "./ConfirmDeleteModal.module.css";
+import styles from "./Confirmdeletemodal.module.css";
 
 export default function ConfirmDeleteModal({ title, message, onClose, onConfirm }) {
   const [loading, setLoading] = useState(false);
