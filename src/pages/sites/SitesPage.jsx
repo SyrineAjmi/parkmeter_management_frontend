@@ -7,7 +7,7 @@ import EditSiteModal from "./EditSiteModal";
 import ConfirmDeleteModal from "../../components/ui/ConfirmDeleteModal";
 
 //const BASE_URL = "https://localhost:7016/api";
-const BASE_URL = `${process.env.VITE_API_URL}/api`;
+const BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
 
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString("fr-FR", {

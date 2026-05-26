@@ -6,7 +6,7 @@ import Pagination from "../../components/ui/Pagination/Pagination";
 import { fetchAllParkmeters } from "../../api/dashboard.api";
 
 //const BASE_URL = "https://localhost:7016/api";
-const BASE_URL = `${process.env.VITE_API_URL}/api`;
+const BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
 
 function authHeaders() {
   const user = JSON.parse(localStorage.getItem("parkmeter_user") || "{}");
