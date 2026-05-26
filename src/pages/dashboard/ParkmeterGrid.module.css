@@ -1,0 +1,154 @@
+.card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  padding: 20px;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #111827;
+  text-transform: capitalize;
+  letter-spacing: 0.04em;
+}
+
+.count {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 500;
+  background: #f3f4f6;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.empty {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.875rem;
+  padding: 32px 0;
+}
+
+/* ── Individual card ── */
+.pmCard {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.pmCard:hover {
+  background: #f3f4f6;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transform: translateY(-1px);
+}
+
+/* Top row */
+.pmTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.pmIdentity {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--status-color, #94a3b8);
+  flex-shrink: 0;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.pmSerial {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: 0.03em;
+}
+
+.statusBadge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Site */
+.pmSite {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+/* Cash */
+.cashSection {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.cashLabelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cashLabel {
+  font-size: 0.72rem;
+  color: #9ca3af;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cashValue {
+  font-size: 0.88rem;
+  font-weight: 630;
+}
+
+.cashTrack {
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.cashFill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s ease;
+}

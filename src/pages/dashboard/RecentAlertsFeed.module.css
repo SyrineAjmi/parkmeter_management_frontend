@@ -1,0 +1,115 @@
+.card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 20px;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.viewAll {
+  background: none;
+  border: none;
+  color: #0e64c8;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.viewAll:hover {
+  text-decoration: underline;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.empty {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+  padding: 24px 0;
+}
+
+.alertRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border-left: 4px solid #e5e7eb;
+  background: #f8fafc;
+  gap: 12px;
+}
+
+.alertInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.alertTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.parkmeter {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.priorityBadge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #fff;
+  padding: 2px 7px;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.alertType {
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+
+.time {
+  font-size: 0.72rem;
+  color: #9ca3af;
+}
+
+.resolveBtn {
+  background: none;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.resolveBtn:hover {
+  background: #0e64c8;
+  color: #fff;
+  border-color: #0e64c8;
+}

@@ -1,0 +1,86 @@
+.page {
+  min-height: 100vh;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  background-size: 28px 28px;
+}
+
+.hero {
+  width: 380px;
+  height: 520px;
+  border-radius: 16px 0 0 16px;
+  background-image: url("https://www.iemgroup.com/wp-content/uploads/2025/12/2025-10_IEM-PrestoOne-14-683x1024.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 100, 200, 0.75);
+}
+.heroContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  padding: 36px 32px;
+}
+
+.heroTitle {
+  color: #fff;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.formPanel {
+  background: #fff;
+  border-radius: 0 16px 16px 0;
+  height: 520px;
+  width: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.formCard {
+  width: 100%;
+}
+
+.footer {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.78rem;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .hero {
+    display: none;
+  }
+
+  .formPanel {
+    border-radius: 16px;
+    width: 100%;
+    max-width: 420px;
+    padding: 36px 28px;
+  }
+}

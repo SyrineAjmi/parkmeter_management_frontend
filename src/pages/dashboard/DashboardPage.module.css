@@ -1,0 +1,153 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+
+/* ── KPI row ── */
+.kpiRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+/* ── Middle / bottom rows ── */
+.middleRow {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.bottomRow {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 14px;
+}
+
+.leftCol { min-width: 0; }
+.rightCol { min-width: 0; }
+
+/* ── Stat dots ── */
+.statDot {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.subText {
+  font-size: 0.74rem;
+  color: #9ca3af;
+}
+
+/* ── Revenue by parkmeter mini table ── */
+.card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid #f3f4f6;
+  background: #f9fafb;
+}
+
+.cardTitle {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #485165;
+  text-transform: capitalize;
+}
+
+.miniTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.miniTable th {
+  text-align: left;
+  padding: 9px 16px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #f9fafb;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.miniTable tbody tr {
+  border-bottom: 1px solid #f9fafb;
+  transition: background 0.1s;
+}
+
+.miniTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+.miniTable tbody tr:hover {
+  background: #f9fafb;
+}
+
+.miniTable td {
+  padding: 10px 16px;
+  color: #374151;
+}
+
+.serial {
+  font-weight: 600;
+  color: #111827;
+  font-size: 0.85rem;
+}
+
+.amount {
+  font-weight: 700;
+  color: #0e64c8;
+}
+
+.empty {
+  text-align: center;
+  color: #9ca3af;
+  padding: 24px;
+}
+
+/* ── Loading / error ── */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  font-size: 1rem;
+  color: #ef4444;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .kpiRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .middleRow,
+  .bottomRow {
+    grid-template-columns: 1fr;
+  }
+}

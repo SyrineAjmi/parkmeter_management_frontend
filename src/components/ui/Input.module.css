@@ -1,0 +1,84 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.inputWrapper:focus-within {
+  border-color: #0e64c8;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+.inputWrapper.hasError {
+  border-color: #ef4444;
+}
+
+.input {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  color: #111827;
+  outline: none;
+  font-family: inherit;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+}
+
+.withLeft {
+  padding-left: 36px;
+}
+
+.withRight {
+  padding-right: 40px;
+}
+
+.leftIcon {
+  position: absolute;
+  left: 11px;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.rightIcon {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  transition: color 0.15s;
+}
+
+.rightIcon:hover {
+  color: #6b7280;
+}
+
+.errorMsg {
+  font-size: 0.78rem;
+  color: #ef4444;
+}

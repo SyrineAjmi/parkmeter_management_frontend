@@ -1,0 +1,65 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background 0.18s ease, opacity 0.18s ease, transform 0.12s ease;
+  font-family: inherit;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.primary {
+  background: #0e64c8;
+  color: #fff;
+}
+.primary:hover:not(:disabled) {
+  background: #0952a5;
+}
+.secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+.secondary:hover:not(:disabled) {
+  background: #e5e7eb;
+}
+
+.ghost {
+  background: transparent;
+  color: #0e64c8;
+  padding: 0;
+}
+.ghost:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

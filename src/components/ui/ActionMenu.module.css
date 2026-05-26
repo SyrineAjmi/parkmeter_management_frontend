@@ -1,0 +1,46 @@
+.actionWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dotsBtn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.actionMenu {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  width: 200px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  z-index: 999;
+  padding: 6px;
+}
+
+.actionItem {
+  width: 100%;
+  text-align: left;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.actionItem:hover {
+  background: #f3f4f6;
+}
+
+.subMenuTitle {
+  font-size: 11px;
+  color: #888;
+  margin: 8px 6px 4px;
+  text-transform: uppercase;
+}

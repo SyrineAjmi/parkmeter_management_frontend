@@ -1,0 +1,399 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  transition: color 0.15s;
+  width: fit-content;
+}
+
+.backBtn:hover {
+  color: #0e64c8;
+}
+
+/* ── Hero ── */
+.hero {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid #0e64c8;
+  border-radius: 12px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.heroLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.heroSerial {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: 0.05em;
+}
+
+.heroMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.heroSite {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.heroRight {
+  display: flex;
+  gap: 32px;
+}
+
+.heroStat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.heroStatLabel {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.heroStatValue {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* ── Grid ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.alertsCard {
+  grid-column: 1 / -1;
+}
+
+/* ── Card ── */
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid #f3f4f6;
+  background: #f9fafb;
+}
+
+.cardTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #111827;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cardBody {
+  padding: 16px 18px;
+}
+
+.liveTag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #16a34a;
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #16a34a;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.readOnlyTag {
+  font-size: 0.72rem;
+  color: #9ca3af;
+  font-weight: 500;
+  background: #f3f4f6;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.alertCount {
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.emptyNote {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  text-align: center;
+  padding: 12px 0;
+}
+
+/* ── Actions ── */
+.actionField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.actionField:last-child {
+  margin-bottom: 0;
+}
+
+.actionLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.actionRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.actionSelect {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+
+.actionSelect:focus {
+  border-color: #0e64c8;
+}
+
+.actionSelect:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.actionNote {
+  font-size: 0.82rem;
+  color: #9ca3af;
+}
+
+.actionError {
+  font-size: 0.78rem;
+  color: #ef4444;
+  margin: 0;
+}
+
+/* ── Session ── */
+.sessionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.sessionStat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sessionLabel {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.sessionValue {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.sessionAmount {
+  color: #0e64c8;
+}
+
+/* ── Config ── */
+.configGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.configRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.configRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.configLabel {
+  font-size: 0.82rem;
+  color: #6b7280;
+}
+
+.configValue {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ── Alerts ── */
+.alertsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.alertRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: #fafafa;
+  border-radius: 8px;
+  border-left: 3px solid #94a3b8;
+}
+
+.alertInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.alertType {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.alertPriority {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.alertTime {
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+
+/* ── States ── */
+.loadingState {
+  text-align: center;
+  padding: 80px;
+  color: #6b7280;
+}
+
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 80px;
+  color: #ef4444;
+  text-align: center;
+}
+
+.retryBtn {
+  padding: 8px 16px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: inherit;
+  color: #374151;
+}
+.configBtn {
+  padding: 5px 12px;
+  background: #0e64c8;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.configBtn:hover {
+  background: #0952a8;
+}
