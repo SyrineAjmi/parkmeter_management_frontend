@@ -108,14 +108,14 @@ export default function CreateOrderModal({ parkmeters, onClose, onCreated }) {
 
           {/* Parkmeter */}
           <div className={styles.field}>
-            <label className={styles.label}>Parkmètre</label>
+            <label className={styles.label}>Parcmètre</label>
             <select
               className={styles.select}
               value={parkmeterId}
               onChange={(e) => setParkmeterId(e.target.value)}
               required
             >
-              <option value="">Sélectionner un parkmètre...</option>
+              <option value="">Sélectionner un parcmètre...</option>
               {parkmeters.map((pm) => (
                 <option key={pm.id} value={pm.id}>
                   {pm.serialNumber} — {pm.siteName || "Sans site"}

@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNotifications } from "../../context/NotificationContext";
 import styles from "./Topbar.module.css";
+import {timeAgo } from "../../utils/dateUtils";
+
 
 const BellIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -35,13 +37,7 @@ function getGreeting() {
   return "Bonsoir";
 }
 
-function timeAgo(timestamp) {
-  const diff = Math.floor((Date.now() - new Date(timestamp)) / 1000);
-  if (diff < 60) return `${diff}s`;
-  if (diff < 3600) return `${Math.floor(diff / 60)}min`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
-  return `${Math.floor(diff / 86400)}j`;
-}
+
 
 export default function Topbar() {
   const { user } = useAuth();

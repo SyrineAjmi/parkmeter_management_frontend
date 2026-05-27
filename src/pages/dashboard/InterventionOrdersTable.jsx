@@ -7,6 +7,7 @@ import {
 const TYPE_LABELS = {
   CASH_COLLECTION: "Collecte caisse",
   PAPER_REFILL: "Recharge papier",
+  HARDWARE_REPAIR : "Réparation Materielle"
 };
 
 export default function InterventionOrdersTable({ orders }) {

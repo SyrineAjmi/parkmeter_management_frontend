@@ -4,6 +4,7 @@ import { useSignalR } from "../../hooks/useSignalR";
 import styles from "./Transactionspage.module.css";
 import Pagination from "../../components/ui/Pagination/Pagination";
 import { fetchAllParkmeters } from "../../api/dashboard.api";
+import { formatDateTime } from "../../utils/dateUtils";
 
 //const BASE_URL = "https://localhost:7016/api";
 const BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
@@ -61,13 +62,6 @@ function StatusBadge({ status }) {
       {STATUS_LABELS[status] || status}
     </span>
   );
-}
-
-function formatDateTime(iso) {
-  return new Date(iso).toLocaleString("fr-FR", {
-    day: "2-digit", month: "short", year: "numeric",
-    hour: "2-digit", minute: "2-digit",
-  });
 }
 
 function formatDuration(minutes) {

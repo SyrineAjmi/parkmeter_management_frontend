@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { useSignalR } from "../hooks/useSignalR";
-import { ALERT_TYPE_LABELS, ALERT_PRIORITY_LABELS } from "../constants/alertTypes";
+import { ALERT_TYPE_LABELS, ALERT_PRIORITY_LABELS, INTERVENTION_TYPE_LABELS } from "../constants/alertTypes";
 import { METER_STATUS_LABELS } from "../constants/meterStatus";
 import { useAuth } from "./AuthContext";
 
@@ -12,6 +12,46 @@ export function NotificationProvider({ children }) {
   const notifKey = `parkmeter_notifications_${user?.userId}`;
   const unreadKey = `parkmeter_unread_${user?.userId}`;
 
+
+  const BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
+
+  useEffect(() => {
+    if (!user?.token) return;
+
+    fetch(`${BASE_URL}/notifications/history`, {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((history) => {
+        console.log("History IDs:", history.map(h => String(h.id)));
+        setNotifications((prev) => {
+          console.log("Existing IDs:", prev.map(n => String(n.id)));
+          const existingIds = new Set(prev.map((n) => String(n.id)));
+          const newOnes = history.filter((h) => !existingIds.has(String(h.id)));
+          console.log("New ones:", newOnes.length);
+          if (newOnes.length === 0) return prev;
+          const merged = [...prev, ...newOnes]
+            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+            .slice(0, 50);
+          localStorage.setItem(notifKey, JSON.stringify(merged));
+
+          const newUnread = newOnes.filter(n => !n.read).length;
+          if (newUnread > 0) {
+            setUnreadCount((prev) => {
+              const updated = prev + newUnread;
+              localStorage.setItem(unreadKey, String(updated));
+              return updated;
+            });
+          }
+
+          return merged;
+        });
+      })
+      .catch(() => { });
+  }, [user?.token]);
   const [notifications, setNotifications] = useState(() => {
     try {
       const saved = localStorage.getItem(notifKey);
@@ -62,7 +102,6 @@ export function NotificationProvider({ children }) {
 
   useSignalR({
     NewAlert: (data) => {
-      if (role !== "SUPERVISEUR" && role !== "GESTIONNAIRE_SYSTEME") return;
       addNotification({
         id: crypto.randomUUID(),
         type: "alert",
@@ -76,7 +115,6 @@ export function NotificationProvider({ children }) {
     },
 
     AlertResolved: (data) => {
-      if (role !== "SUPERVISEUR" && role !== "GESTIONNAIRE_SYSTEME") return;
       addNotification({
         id: crypto.randomUUID(),
         type: "resolved",
@@ -90,7 +128,6 @@ export function NotificationProvider({ children }) {
     },
 
     StatusChanged: (data) => {
-      if (role !== "GESTIONNAIRE_SYSTEME" && role !== "SUPERVISEUR" && role !== "AGENT_INSTALLATION") return;
       addNotification({
         id: crypto.randomUUID(),
         type: "status",
@@ -104,7 +141,6 @@ export function NotificationProvider({ children }) {
     },
 
     ParkmeterOnline: (data) => {
-      if (role !== "GESTIONNAIRE_SYSTEME" && role !== "SUPERVISEUR" && role !== "AGENT_INSTALLATION") return;
       addNotification({
         id: crypto.randomUUID(),
         type: "online",
@@ -118,13 +154,11 @@ export function NotificationProvider({ children }) {
     },
 
     InterventionOrderCreated: (data) => {
-      if (role !== "SUPERVISEUR" && role !== "OPERATEUR") return;
       addNotification({
         id: crypto.randomUUID(),
         type: "order",
         title: "Nouvel ordre d'intervention",
-        message: `[${data.serialNumber}] Ordre créé`,
-        parkmeterID: data.parkmeterID,
+        message: `[${data.serialNumber}] ${INTERVENTION_TYPE_LABELS[data.interventionType] || data.interventionType}`,        parkmeterID: data.parkmeterID,
         timestamp: data.timestamp || new Date().toISOString(),
         read: false,
         color: "#f59e0b",
@@ -132,7 +166,6 @@ export function NotificationProvider({ children }) {
     },
 
     InterventionOrderCompleted: (data) => {
-      if (role !== "SUPERVISEUR" && role !== "OPERATEUR") return;
       addNotification({
         id: crypto.randomUUID(),
         type: "order_done",
@@ -146,7 +179,6 @@ export function NotificationProvider({ children }) {
     },
 
     SessionClosed: (data) => {
-      if (role !== "RESPONSABLE_FINANCIER") return;
       addNotification({
         id: crypto.randomUUID(),
         type: "session",

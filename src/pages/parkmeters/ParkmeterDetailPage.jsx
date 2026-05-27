@@ -8,6 +8,7 @@ import { METER_STATUS_COLORS, METER_STATUS_LABELS } from "../../constants/meterS
 import { ALERT_TYPE_LABELS, ALERT_PRIORITY_COLORS, ALERT_PRIORITY_LABELS } from "../../constants/alertTypes";
 import styles from "./ParkmeterDetailPage.module.css";
 import ConfigModal from "./Configmodal";
+import { formatDateTime } from "../../utils/dateUtils";
 
 
 //const BASE_URL = "https://localhost:7016/api";
@@ -66,13 +67,6 @@ const ALLOWED_TRANSITIONS = {
   PENDING_ACTIVATION: [],
 };
 
-function formatDateTime(iso) {
-  if (!iso) return "—";
-  return new Date(iso).toLocaleString("fr-FR", {
-    day: "2-digit", month: "short", year: "numeric",
-    hour: "2-digit", minute: "2-digit",
-  });
-}
 
 function formatDuration(start) {
   const mins = Math.floor((Date.now() - new Date(start)) / 60000);
@@ -342,7 +336,7 @@ export default function ParkmeterDetailPage() {
                 ) : (
                   <div className={styles.sessionGrid}>
                     <div className={styles.sessionStat}>
-                      <span className={styles.sessionLabel}>Démarré le</span>
+                      <span className={styles.sessionLabel}>Démarrée le</span>
                       <span className={styles.sessionValue}>
                         {formatDateTime(currentSession.startDateTime)}
                       </span>
@@ -354,13 +348,13 @@ export default function ParkmeterDetailPage() {
                       </span>
                     </div>
                     <div className={styles.sessionStat}>
-                      <span className={styles.sessionLabel}>Transactions</span>
+                      <span className={styles.sessionLabel}>Nombre de Transactions</span>
                       <span className={styles.sessionValue}>
                         {currentSession.totalTransactions}
                       </span>
                     </div>
                     <div className={styles.sessionStat}>
-                      <span className={styles.sessionLabel}>Montant</span>
+                      <span className={styles.sessionLabel}>Montant Total</span>
                       <span className={`${styles.sessionValue} ${styles.sessionAmount}`}>
                         {(currentSession.totalAmount ?? 0).toFixed(3)} DT
                       </span>
@@ -395,13 +389,13 @@ export default function ParkmeterDetailPage() {
                 ) : (
                   <div className={styles.configGrid}>
                     <div className={styles.configRow}>
-                      <span className={styles.configLabel}>Stratégie</span>
+                      <span className={styles.configLabel}>Stratégie de tarification</span>
                       <span className={styles.configValue}>
                         {STRATEGY_LABELS[config.strategyType] || config.strategyType}
                       </span>
                     </div>
                     <div className={styles.configRow}>
-                      <span className={styles.configLabel}>Durée max</span>
+                      <span className={styles.configLabel}>Durée maximale de stationnement</span>
                       <span className={styles.configValue}>{config.maxDuration} min</span>
                     </div>
                     {config.pricePerHour > 0 && (

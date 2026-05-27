@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import styles from "./InterventionOrdersPage.module.css";
 import CreateOrderModal from "./Createordermodal";
 import { fetchAllParkmeters } from "../../api/dashboard.api";
+import { formatDateTime } from "../../utils/dateUtils";
 
 // const BASE_URL = "https://localhost:7016/api";
 const BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
@@ -75,12 +76,6 @@ function StatusBadge({ status }) {
   );
 }
 
-function formatDateTime(iso) {
-  return new Date(iso).toLocaleString("fr-FR", {
-    day: "2-digit", month: "short",
-    hour: "2-digit", minute: "2-digit",
-  });
-}
 
 export default function InterventionOrdersPage() {
   const { user } = useAuth();

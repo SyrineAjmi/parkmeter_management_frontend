@@ -30,9 +30,6 @@ const [user, setUser] = useState(() => {
     const stored = localStorage.getItem("parkmeter_user");
     if (stored) {
       const userData = JSON.parse(stored);
-      // clear user notifications
-      localStorage.removeItem(`parkmeter_notifications_${userData.userId}`);
-      localStorage.removeItem(`parkmeter_unread_${userData.userId}`);
     }
     localStorage.removeItem("parkmeter_user");
     setUser(null);

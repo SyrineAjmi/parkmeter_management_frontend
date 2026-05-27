@@ -36,3 +36,9 @@ export const INTERVENTION_STATUS_LABELS = {
   PENDING: "En attente",
   COMPLETED: "Terminé",
 };
+
+export const INTERVENTION_TYPE_LABELS = {
+  CASH_COLLECTION: "Collecte caisse",
+  PAPER_REFILL:    "Recharge papier",
+  HARDWARE_REPAIR: "Réparation matérielle",
+};

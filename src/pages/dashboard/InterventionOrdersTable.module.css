@@ -4,6 +4,8 @@
   border: 1px solid #e5e7eb;
   padding: 20px;
   height: 100%;
+  overflow: auto;
+  scrollbar-width: thin;
 }
 
 .header {
