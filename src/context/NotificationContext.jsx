@@ -8,126 +8,75 @@ const NotificationContext = createContext(null);
 
 export function NotificationProvider({ children }) {
   const { user } = useAuth();
-  const notifKey = `parkmeter_notifications_${user?.userId}`;
-  const unreadKey = `parkmeter_unread_${user?.userId}`;
   const BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
-
-  // Initialize state cleanly as empty
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  // 1. Dynamic Watcher: Sync states dynamically from localStorage whenever the User ID changes
-  useEffect(() => {
-    if (user?.userId) {
-      try {
-        const savedNotifs = localStorage.getItem(notifKey);
-        const savedUnread = localStorage.getItem(unreadKey);
-        setNotifications(savedNotifs ? JSON.parse(savedNotifs) : []);
-        setUnreadCount(savedUnread ? parseInt(savedUnread, 10) : 0);
-      } catch {
-        setNotifications([]);
-        setUnreadCount(0);
-      }
-    } else {
-      setNotifications([]);
-      setUnreadCount(0);
-    }
-  }, [user?.userId, notifKey, unreadKey]);
+  function getColorByType(type) {
+    const colors = {
+      ALERT: "#ef4444",
+      ORDRE: "#f59e0b",
+      SESSION: "#7c3aed",
+      STATUS: "#0e64c8",
+    };
+    return colors[type?.toUpperCase()] || "#6366f1";
+  }
 
-  // 2. Fetch history and securely map read flags + fix UTC time zone parsing
-  useEffect(() => {
-    if (!user?.token || !user?.userId) return;
 
-    fetch(`${BASE_URL}/notifications/history`, {
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-        "Content-Type": "application/json",
-      },
+  useEffect(() => {
+    if (!user?.token) return;
+    fetch(`${BASE_URL}/Notifications/unread-count`, {
+      headers: { Authorization: `Bearer ${user.token}` }
     })
-      .then((res) => res.json())
-      .then((history) => {
-        setNotifications((prev) => {
-          const existingMap = new Map(prev.map((n) => [String(n.id).toLowerCase(), n]));
+      .then(r => r.json())
+      .then(data => setUnreadCount(data.count));
+  }, [user?.token]);
 
-          const processedHistory = history.map((h) => {
-            const matched = existingMap.get(String(h.id).toLowerCase());
-            
-            // Timezone Fix: Ensure the string is treated as explicit UTC if it lacks an offset identifier
-            let cleanTimestamp = h.timestamp;
-            if (cleanTimestamp && !cleanTimestamp.endsWith("Z") && !cleanTimestamp.includes("+")) {
-              cleanTimestamp = `${cleanTimestamp}Z`;
-            }
-
-            return {
-              ...h,
-              timestamp: cleanTimestamp,
-              // Keep local user's read flag if seen before; otherwise default to API value or false
-              read: matched ? matched.read : (h.read !== undefined ? h.read : false),
-            };
-          });
-
-          const existingIds = new Set(prev.map((n) => String(n.id).toLowerCase()));
-          const newOnes = processedHistory.filter((h) => !existingIds.has(String(h.id).toLowerCase()));
-
-          if (newOnes.length === 0 && prev.length === processedHistory.length) return prev;
-
-          const merged = [...prev, ...newOnes]
-            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
-            .slice(0, 50);
-
-          localStorage.setItem(notifKey, JSON.stringify(merged));
-
-          // Set the unread badge dot count precisely based on genuine unread new additions
-          const newUnread = newOnes.filter((n) => !n.read).length;
-          if (newUnread > 0) {
-            setUnreadCount((prevUnread) => {
-              const updated = prevUnread + newUnread;
-              localStorage.setItem(unreadKey, String(updated));
-              return updated;
-            });
-          }
-
-          return merged;
-        });
+  useEffect(() => {
+    if (!user?.token) return;
+    fetch(`${BASE_URL}/Notifications`, {
+      headers: { Authorization: `Bearer ${user.token}` }
+    })
+      .then(r => r.json())
+      .then(history => {
+        const mapped = history.map(h => ({
+          ...h,
+          timestamp: h.createdAt,
+          type: h.type?.toLowerCase() || "alert",
+          color: getColorByType(h.type),
+          read: h.isRead,
+        }));
+        setNotifications(mapped);
       })
-      .catch(() => {});
-  }, [user?.token, user?.userId, BASE_URL, notifKey, unreadKey]);
+      .catch(() => { });
+  }, [user?.token, BASE_URL]);
 
   const addNotification = useCallback((notif) => {
     setNotifications((prev) => {
-      // De-duplication check
       const isDuplicate = prev.some(
-        (n) => n.id === notif.id || (n.message === notif.message && Math.abs(new Date(n.timestamp) - new Date(notif.timestamp)) < 2000)
+        (n) => n.id === notif.id ||
+          (n.message === notif.message &&
+            Math.abs(new Date(n.timestamp) - new Date(notif.timestamp)) < 2000)
       );
       if (isDuplicate) return prev;
-
-      const updated = [notif, ...prev].slice(0, 50);
-      localStorage.setItem(notifKey, JSON.stringify(updated));
-      return updated;
+      return [notif, ...prev].slice(0, 50);
     });
-    setUnreadCount((prev) => {
-      const updated = prev + 1;
-      localStorage.setItem(unreadKey, String(updated));
-      return updated;
-    });
-  }, [notifKey, unreadKey]);
+    setUnreadCount((prev) => prev + 1);
+  }, []);
 
-  const markAllRead = useCallback(() => {
+  const markAllRead = useCallback(async () => {
     setUnreadCount(0);
-    localStorage.setItem(unreadKey, "0");
-    setNotifications((prev) => {
-      const updated = prev.map((n) => ({ ...n, read: true }));
-      localStorage.setItem(notifKey, JSON.stringify(updated));
-      return updated;
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+    await fetch(`${BASE_URL}/Notifications/read-all`, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${user?.token}` }
     });
-  }, [notifKey, unreadKey]);
+  }, [user?.token, BASE_URL]);
 
   const clearAll = useCallback(() => {
     setNotifications([]);
     setUnreadCount(0);
-    localStorage.setItem(notifKey, "[]");
-    localStorage.setItem(unreadKey, "0");
-  }, [notifKey, unreadKey]);
+  }, []);
 
   useSignalR({
     NewAlert: (data) => {

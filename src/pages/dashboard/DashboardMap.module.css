@@ -148,7 +148,6 @@
 }
 
 .miniSerial {
-  font-family: monospace;
   font-weight: 700;
   font-size: 0.82rem;
   color: #111827;
@@ -171,7 +170,7 @@
 .miniCashLabel {
   font-size: 0.68rem;
   color: #9ca3af;
-  text-transform: uppercase;
+  text-transform: capitalize;
   letter-spacing: 0.03em;
 }
 
