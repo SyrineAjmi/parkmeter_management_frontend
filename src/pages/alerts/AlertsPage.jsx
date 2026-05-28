@@ -8,6 +8,7 @@ import {
   ALERT_PRIORITY_LABELS,
 } from "../../constants/alertTypes";
 import { formatDateTime } from "../../utils/dateUtils";
+import Pagination from "../../components/ui/Pagination/Pagination";
 
 
 // const BASE_URL = "https://localhost:7016/api";
@@ -40,12 +41,12 @@ async function resolveAlert(id) {
 
 const ALERT_STATUS_LABELS = {
   NOT_RESOLVED: "Non résolue",
-  RESOLVED:"Résolue",
+  RESOLVED: "Résolue",
 };
 
 const ALERT_STATUS_COLORS = {
   NOT_RESOLVED: { bg: "#fee2e2", text: "#991b1b" },
-  RESOLVED:     { bg: "#dcfce7", text: "#166534" },
+  RESOLVED: { bg: "#dcfce7", text: "#166534" },
 };
 
 function PriorityBadge({ priority }) {
@@ -75,6 +76,8 @@ export default function AlertsPage() {
   const [statusFilter, setStatusFilter] = useState("NOT_RESOLVED");
   const [resolving, setResolving] = useState(null);
   const [resolveError, setResolveError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
 
   const load = useCallback(() => {
     setError(null);
@@ -84,6 +87,7 @@ export default function AlertsPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => { setCurrentPage(1); }, [priorityFilter, statusFilter]);
   useEffect(() => { load(); }, [load]);
 
   // ── Real-time ─────────────────────────────────────────────
@@ -93,12 +97,12 @@ export default function AlertsPage() {
   useSignalR({
     NewAlert: useCallback(() => {
       // payload has no alertId or serial — reload to get full data from DB
-      fetchAlerts().then(setAlerts).catch(() => {});
+      fetchAlerts().then(setAlerts).catch(() => { });
     }, []),
 
-AlertResolved: useCallback(() => {
-  fetchAlerts().then(setAlerts).catch(() => {});
-}, []),
+    AlertResolved: useCallback(() => {
+      fetchAlerts().then(setAlerts).catch(() => { });
+    }, []),
   });
 
   // ── Manual resolve ────────────────────────────────────────
@@ -126,10 +130,14 @@ AlertResolved: useCallback(() => {
 
   const filtered = alerts.filter((a) => {
     const matchPriority = priorityFilter === "ALL" || a.priority === priorityFilter;
-    const matchStatus   = statusFilter   === "ALL" || a.status   === statusFilter;
+    const matchStatus = statusFilter === "ALL" || a.status === statusFilter;
     return matchPriority && matchStatus;
   });
-
+  const totalPages = Math.ceil(filtered.length / pageSize);
+  const paginated = filtered.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
   const unresolvedCount = alerts.filter((a) => a.status === "NOT_RESOLVED").length;
 
   return (
@@ -207,7 +215,7 @@ AlertResolved: useCallback(() => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filtered.map((alert) => (
+                  {paginated.map((alert) => (
                     <tr
                       key={alert.id}
                       className={
@@ -230,7 +238,7 @@ AlertResolved: useCallback(() => {
                       </td>
                       <td>
                         {alert.status === "NOT_RESOLVED" &&
-                        alert.type === "HARDWARE_FAILURE" ? (
+                          alert.type === "HARDWARE_FAILURE" ? (
                           <button
                             className={styles.resolveBtn}
                             disabled={resolving === alert.id}
@@ -249,6 +257,11 @@ AlertResolved: useCallback(() => {
             </div>
           )
         )}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </AppLayout>
   );

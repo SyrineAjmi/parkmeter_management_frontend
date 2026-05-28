@@ -7,6 +7,9 @@ import RecentAlertsFeed from "./RecentAlertsFeed";
 import { useDashboard } from "../../hooks/useDashboard";
 import { useAuth } from "../../context/AuthContext";
 import styles from "./DashboardPage.module.css";
+import DashboardMap from "./DashboardMap";
+import { useState, useCallback } from "react";
+import { useSignalR } from "../../hooks/useSignalR";
 
 const ParkmetersIcon = () => (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -47,7 +50,7 @@ function StatDot({ color, label, value }) {
 }
 
 // ─── GESTIONNAIRE view ─────────────────────────────────────
-function GestionnaireView({ overview, revenueBySite, parkmeters }) {
+function GestionnaireView({ overview, revenueBySite, parkmeters, sites }) {
     return (
         <>
             <div className={styles.kpiRow}>
@@ -67,7 +70,9 @@ function GestionnaireView({ overview, revenueBySite, parkmeters }) {
                 </KpiCard>
             </div>
             <div className={styles.middleRow}>
-                <div className={styles.leftCol}><ParkmeterGrid parkmeters={parkmeters} /></div>
+                <div className={styles.leftCol}>
+                    <DashboardMap sites={sites} parkmeters={parkmeters} />
+                </div>
                 <div className={styles.rightCol}><RevenueChart data={revenueBySite} /></div>
             </div>
         </>
@@ -75,7 +80,7 @@ function GestionnaireView({ overview, revenueBySite, parkmeters }) {
 }
 
 // ─── SUPERVISEUR view ──────────────────────────────────────
-function SuperviseurView({ overview, alertsSummary, orders, parkmeters }) {
+function SuperviseurView({ overview, alertsSummary, orders, parkmeters, sites }) {
     return (
         <>
             <div className={styles.kpiRow}>
@@ -96,8 +101,9 @@ function SuperviseurView({ overview, alertsSummary, orders, parkmeters }) {
                 </KpiCard>
             </div>
             <div className={styles.middleRow}>
-                <div className={styles.leftCol}><ParkmeterGrid parkmeters={parkmeters} /></div>
-                <div className={styles.rightCol}><InterventionOrdersTable orders={orders} /></div>
+                <div className={styles.leftCol}>
+                    <DashboardMap sites={sites} parkmeters={parkmeters} />
+                </div>                <div className={styles.rightCol}><InterventionOrdersTable orders={orders} /></div>
             </div>
         </>
     );
@@ -162,6 +168,9 @@ function FinancierView({ revenueSummary, revenueBySite, revenueByParkmeter }) {
                 <div className={styles.rightCol}>
                     <RevenueByParkmeterTable data={revenueByParkmeter} />
                 </div>
+                 <div className={styles.rightCol}>
+                    <LiveTransactionsFeed/>
+                </div>
             </div>
         </>
     );
@@ -200,11 +209,86 @@ function RevenueByParkmeterTable({ data = [] }) {
     );
 }
 
+
+function LiveTransactionsFeed() {
+  const [txs, setTxs] = useState([]);
+
+  useSignalR({
+    NewTransaction: useCallback((data) => {
+      setTxs((prev) => [{
+        id: crypto.randomUUID(),
+        parkmeterID: data.parkmeterID,
+        amount: data.amount,
+        status: data.status,
+        timestamp: data.timestamp || new Date().toISOString(),
+      }, ...prev].slice(0, 20));
+    }, []),
+  });
+
+  const STATUS_COLORS = {
+    COMPLETED: "#16a34a",
+    FAILED:    "#ef4444",
+    CANCELLED: "#6b7280",
+  };
+
+  const STATUS_LABELS = {
+    COMPLETED: "Complétée",
+    FAILED:    "Échouée",
+    CANCELLED: "Annulée",
+  };
+
+  return (
+    <div className={styles.card} style={{ height: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      <div className={styles.cardHeader}>
+        <span className={styles.cardTitle}>Transactions en direct</span>
+        <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: "0.72rem", color: "#16a34a", fontWeight: 600 }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a", animation: "pulse 1.5s infinite", display: "inline-block" }} />
+          Live
+        </span>
+      </div>
+      {txs.length === 0 ? (
+        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", color: "#9ca3af", fontSize: "0.85rem", flexDirection: "column", gap: 8 }}>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.5">
+            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          En attente de transactions...
+        </div>
+      ) : (
+        <div style={{ flex: 1, overflowY: "auto", padding: "8px 0" }}>
+          {txs.map((tx) => (
+            <div key={tx.id} style={{
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              padding: "8px 16px", borderBottom: "1px solid #f9fafb", animation: "fadeIn 0.3s ease"
+            }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <span style={{ fontSize: "0.78rem", color: "#9ca3af" }}>
+                  {new Date(tx.timestamp).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                </span>
+              </div>
+              <span style={{
+                fontSize: "0.75rem", fontWeight: 600, padding: "2px 8px",
+                borderRadius: 999, background: STATUS_COLORS[tx.status] + "20",
+                color: STATUS_COLORS[tx.status]
+              }}>
+                {STATUS_LABELS[tx.status] || tx.status}
+              </span>
+              <span style={{ fontSize: "0.95rem", fontWeight: 700, color: tx.status === "COMPLETED" ? "#04172c" : "#9ca3af" }}>
+                {tx.status === "COMPLETED" ? `${tx.amount?.toFixed(3)} DT` : "—"}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 // ─── AGENT INSTALLATION view ───────────────────────────────
 function AgentView({ parkmeters }) {
     return (
         <div className={styles.middleRow}>
-            <div className={styles.leftCol}><ParkmeterGrid parkmeters={parkmeters} /></div>
+            <div className={styles.leftCol}>
+                <ParkmeterGrid parkmeters={parkmeters} />
+            </div>
         </div>
     );
 }
@@ -224,6 +308,7 @@ export default function DashboardPage() {
         orders,
         loading,
         error,
+        sites
     } = useDashboard(role);
 
     if (loading) {
@@ -249,6 +334,7 @@ export default function DashboardPage() {
                     overview={overview}
                     revenueBySite={revenueBySite}
                     parkmeters={parkmeters}
+                    sites={sites}
                 />
             )}
             {role === "SUPERVISEUR" && (
@@ -257,6 +343,7 @@ export default function DashboardPage() {
                     alertsSummary={alertsSummary}
                     orders={orders}
                     parkmeters={parkmeters}
+                    sites={sites}
                 />
             )}
             {role === "RESPONSABLE_FINANCIER" && (

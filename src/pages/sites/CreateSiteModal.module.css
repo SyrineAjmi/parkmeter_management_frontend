@@ -170,3 +170,8 @@
   background: #93c5fd;
   cursor: not-allowed;
 }
+
+.hint{
+  font-size: 0.75rem;
+  color: #111827;
+}

@@ -10,9 +10,9 @@
   gap: 6px;
   background: none;
   border: none;
-  color: #6b7280;
-  font-size: 0.85rem;
-  font-weight: 500;
+  color: #4e535e;
+  font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
   font-family: inherit;
   padding: 0;
@@ -46,8 +46,8 @@
 
 .heroSerial {
   font-size: 1.6rem;
-  font-weight: 800;
-  color: #1d2c4e;
+  font-weight: 700;
+  color: #0d1936;
 }
 
 .heroMeta {
@@ -75,11 +75,13 @@
 }
 
 .heroSite {
-  font-size: 0.85rem;
-  color: #6b7280;
+  font-size: 1rem;
+  color: #3b3f46;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
-
 .heroRight {
   display: flex;
   gap: 32px;
@@ -93,10 +95,10 @@
 }
 
 .heroStatLabel {
-  font-size: 0.75rem;
-  color: #9ca3af;
+  font-size: 0.9rem;
+  color: #515a6e;
   font-weight: 500;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .heroStatValue {
@@ -135,8 +137,8 @@
 
 .cardTitle {
   font-size: 1rem;
-  font-weight: 700;
-  color: #3c4455;
+  font-weight: 610;
+  color: #09183c;
   text-transform: capitalize;
 }
 
@@ -204,10 +206,9 @@
 }
 
 .actionLabel {
-  font-size: 0.78rem;
+  font-size: 0.86rem;
   font-weight: 600;
   color: #374151;
-  text-transform: uppercase;
 }
 
 .actionRow {
@@ -222,7 +223,8 @@
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   font-size: 0.875rem;
-  color: #111827;
+  font-weight: 400;
+  color: #414448;
   background: #fff;
   outline: none;
   cursor: pointer;
@@ -264,20 +266,19 @@
 }
 
 .sessionLabel {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  font-weight: 500;
-  text-transform: uppercase;
+  font-size: 0.86rem;
+  color: #7d838c;
+  font-weight: 600;
 }
 
 .sessionValue {
   font-size: 0.95rem;
-  font-weight: 600;
-  color: #111827;
+  font-weight: 500;
+  color: #263044;
 }
 
 .sessionAmount {
-  color: #062e5c;
+  color: #052953;
   font-weight: 700;
 }
 
@@ -301,15 +302,16 @@
   padding-bottom: 0;
 }
 
-.configLabel {
-  font-size: 0.82rem;
-  color: #6b7280;
+.configLabel{
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4d5157;
 }
 
 .configValue {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #111827;
+  color: #23314f;
 }
 
 /* ── Alerts ── */
@@ -342,8 +344,11 @@
 }
 
 .alertPriority {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
 .alertTime {
@@ -392,4 +397,59 @@
 }
 .configBtn:hover {
   background: #0952a8;
+}
+.statusBtns {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.statusBtnGreen {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.statusBtnGreen:hover {
+  background: #16a34a;
+  color: #fff;
+  border-color: #16a34a;
+}
+
+.statusBtnRed {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.statusBtnRed:hover {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+}
+
+.statusBtnGreen:disabled,
+.statusBtnRed:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

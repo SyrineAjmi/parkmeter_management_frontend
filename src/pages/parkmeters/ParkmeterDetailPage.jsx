@@ -9,6 +9,7 @@ import { ALERT_TYPE_LABELS, ALERT_PRIORITY_COLORS, ALERT_PRIORITY_LABELS } from 
 import styles from "./ParkmeterDetailPage.module.css";
 import ConfigModal from "./Configmodal";
 import { formatDateTime } from "../../utils/dateUtils";
+import StatusConfirmModal from "../../components/ui/StatusConfirmModal";
 
 
 //const BASE_URL = "https://localhost:7016/api";
@@ -96,6 +97,8 @@ export default function ParkmeterDetailPage() {
   const [siteLoading, setSiteLoading] = useState(false);
   const [siteError, setSiteError] = useState(null);
   const [showConfigModal, setShowConfigModal] = useState(false);
+
+  const [confirmStatus, setConfirmStatus] = useState(null);
 
 
   const load = useCallback(() => {
@@ -214,7 +217,7 @@ export default function ParkmeterDetailPage() {
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polyline points="15 18 9 12 15 6" />
           </svg>
-          Retour aux parcmètres
+          <span className={styles.back}>Retour à la liste des parcmètres</span>
         </button>
 
         {/* Hero header */}
@@ -230,13 +233,17 @@ export default function ParkmeterDetailPage() {
                 {METER_STATUS_LABELS[parkmeter.status] || parkmeter.status}
               </span>
               <span className={styles.heroSite}>
-                Site : {parkmeter.siteName || "Site non assigné"}
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#3b3f46" stroke="#3b3f46" strokeWidth="1">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                  <circle cx="12" cy="9" r="2.5" fill="#fff" stroke="none" />
+                </svg>
+                {parkmeter.siteName || "Site non assigné"}
               </span>
             </div>
           </div>
           <div className={styles.heroRight}>
             <div className={styles.heroStat}>
-              <span className={styles.heroStatLabel}>Caisse</span>
+              <span className={styles.heroStatLabel}>Total en Caisse</span>
               <span
                 className={styles.heroStatValue}
                 style={{ color: parkmeter.cashAmount >= 40 ? "#ef4444" : parkmeter.cashAmount >= 20 ? "#f59e0b" : "#111827" }}
@@ -266,30 +273,49 @@ export default function ParkmeterDetailPage() {
 
                 {/* Status change */}
                 {isGestionnaire && (
-
                   <div className={styles.actionField}>
                     <label className={styles.actionLabel}>Changer le statut</label>
-                    {transitions.length === 0 ? (
-                      <p className={styles.actionNote}>
-                        Aucune transition disponible pour ce statut
-                      </p>
-                    ) : (
-                      <div className={styles.actionRow}>
-                        <select
-                          className={styles.actionSelect}
-                          value=""
-                          onChange={handleStatusChange}
+                    {parkmeter.status === "PENDING_ACTIVATION" ? (
+                      <p className={styles.actionNote}>En attente d'activation via MQTT</p>
+                    ) : parkmeter.status === "TEMPORARILY_UNAVAILABLE" ? (
+                      <div>
+                        <button
+                          className={styles.statusBtnRed}
                           disabled={statusLoading}
+                          onClick={() => setConfirmStatus("OUT_OF_SERVICE")}
                         >
-                          <option value="" disabled>
-                            {statusLoading ? "Envoi..." : "Sélectionner →"}
-                          </option>
-                          {transitions.map((s) => (
-                            <option key={s} value={s}>
-                              {METER_STATUS_LABELS[s] || s}
-                            </option>
-                          ))}
-                        </select>
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <circle cx="12" cy="12" r="10" /><line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+                          </svg>
+                          Mettre hors service
+                        </button>
+                      </div>
+                    ) : (
+                      <div className={styles.statusBtns}>
+                        {parkmeter.status !== "IN_SERVICE" && (
+                          <button
+                            className={styles.statusBtnGreen}
+                            disabled={statusLoading}
+                            onClick={() => setConfirmStatus("IN_SERVICE")}
+                          >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            Mettre en service
+                          </button>
+                        )}
+                        {parkmeter.status !== "OUT_OF_SERVICE" && (
+                          <button
+                            className={styles.statusBtnRed}
+                            disabled={statusLoading}
+                            onClick={() => setConfirmStatus("OUT_OF_SERVICE")}
+                          >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                              <circle cx="12" cy="12" r="10" /><line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+                            </svg>
+                            Mettre hors service
+                          </button>
+                        )}
                       </div>
                     )}
                     {statusError && <p className={styles.actionError}>{statusError}</p>}
@@ -348,13 +374,13 @@ export default function ParkmeterDetailPage() {
                       </span>
                     </div>
                     <div className={styles.sessionStat}>
-                      <span className={styles.sessionLabel}>Nombre de Transactions</span>
+                      <span className={styles.sessionLabel}>Nombre de transactions</span>
                       <span className={styles.sessionValue}>
                         {currentSession.totalTransactions}
                       </span>
                     </div>
                     <div className={styles.sessionStat}>
-                      <span className={styles.sessionLabel}>Montant Total</span>
+                      <span className={styles.sessionLabel}>Montant total session</span>
                       <span className={`${styles.sessionValue} ${styles.sessionAmount}`}>
                         {(currentSession.totalAmount ?? 0).toFixed(3)} DT
                       </span>
@@ -468,7 +494,7 @@ export default function ParkmeterDetailPage() {
                             </span>
                             <span
                               className={styles.alertPriority}
-                              style={{ color }}
+                              style={{ background: color + "20", color }}
                             >
                               {ALERT_PRIORITY_LABELS[alert.priority] || alert.priority}
                             </span>
@@ -491,6 +517,27 @@ export default function ParkmeterDetailPage() {
             existingConfig={config}
             onClose={() => setShowConfigModal(false)}
             onSaved={load}
+          />
+        )}
+
+        {confirmStatus && (
+          <StatusConfirmModal
+            status={confirmStatus}
+            serialNumber={parkmeter.serialNumber}
+            onClose={() => setConfirmStatus(null)}
+            onConfirm={async () => {
+              setStatusLoading(true);
+              setStatusError(null);
+              try {
+                await changeStatus(id, confirmStatus);
+                setConfirmStatus(null);
+              } catch (err) {
+                setStatusError(err.message);
+                setConfirmStatus(null);
+              } finally {
+                setStatusLoading(false);
+              }
+            }}
           />
         )}
       </div>

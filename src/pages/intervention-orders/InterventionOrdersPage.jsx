@@ -6,6 +6,7 @@ import styles from "./InterventionOrdersPage.module.css";
 import CreateOrderModal from "./Createordermodal";
 import { fetchAllParkmeters } from "../../api/dashboard.api";
 import { formatDateTime } from "../../utils/dateUtils";
+import Pagination from "../../components/ui/Pagination/Pagination";
 
 // const BASE_URL = "https://localhost:7016/api";
 const BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
@@ -90,6 +91,9 @@ export default function InterventionOrdersPage() {
   const [showModal, setShowModal] = useState(false);
   const [parkmeters, setParkmeters] = useState([]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
+
 
   const load = useCallback(() => {
     setError(null);
@@ -109,6 +113,9 @@ export default function InterventionOrdersPage() {
     }
   }, [load]
   );
+
+  useEffect(() => { setCurrentPage(1); }, [statusFilter, typeFilter]);
+
 
   // ── Real-time ─────────────────────────────────────────────
   // InterventionOrderCreated: { OperatorId, ParkmeterID, OrderId, Timestamp }
@@ -146,6 +153,12 @@ export default function InterventionOrdersPage() {
     return matchStatus && matchType;
   });
 
+
+  const totalPages = Math.ceil(filtered.length / pageSize);
+  const paginated = filtered.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
   const pendingCount = orders.filter((o) => o.status === "PENDING").length;
 
   return (
@@ -234,7 +247,7 @@ export default function InterventionOrdersPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filtered.map((order) => (
+                  {paginated.map((order) => (
                     <tr
                       key={order.id}
                       className={order.status === "PENDING" ? styles.rowPending : ""}
@@ -263,6 +276,11 @@ export default function InterventionOrdersPage() {
             </div>
           )
         )}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </AppLayout>
   );

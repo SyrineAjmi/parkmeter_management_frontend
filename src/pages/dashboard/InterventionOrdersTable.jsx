@@ -16,15 +16,14 @@ export default function InterventionOrdersTable({ orders }) {
       <div className={styles.header}>
         <span className={styles.title}>Ordres d'intervention</span>
       </div>
-
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Parkmètre</th>
+            <th>Parcmètre</th>
             <th>Opérateur</th>
             <th>Type</th>
-            <th>Créé à</th>
             <th>Statut</th>
+            <th>Créé à</th>
           </tr>
         </thead>
         <tbody>
@@ -46,12 +45,6 @@ export default function InterventionOrdersTable({ orders }) {
                   {TYPE_LABELS[order.type] || order.type}
                 </span>
               </td>
-              <td className={styles.time}>
-                {new Date(order.createdAt).toLocaleTimeString("fr-FR", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </td>
               <td>
                 <span
                   className={styles.statusBadge}
@@ -63,6 +56,12 @@ export default function InterventionOrdersTable({ orders }) {
                 >
                   {INTERVENTION_STATUS_LABELS[order.status] || order.status}
                 </span>
+              </td>
+                            <td className={styles.time}>
+                {new Date(order.createdAt).toLocaleTimeString("fr-FR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
               </td>
             </tr>
           ))}

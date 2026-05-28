@@ -8,15 +8,35 @@ const NotificationContext = createContext(null);
 
 export function NotificationProvider({ children }) {
   const { user } = useAuth();
-  const role = user?.role;
   const notifKey = `parkmeter_notifications_${user?.userId}`;
   const unreadKey = `parkmeter_unread_${user?.userId}`;
-
-
   const BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
 
+  // Initialize state cleanly as empty
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // 1. Dynamic Watcher: Sync states dynamically from localStorage whenever the User ID changes
   useEffect(() => {
-    if (!user?.token) return;
+    if (user?.userId) {
+      try {
+        const savedNotifs = localStorage.getItem(notifKey);
+        const savedUnread = localStorage.getItem(unreadKey);
+        setNotifications(savedNotifs ? JSON.parse(savedNotifs) : []);
+        setUnreadCount(savedUnread ? parseInt(savedUnread, 10) : 0);
+      } catch {
+        setNotifications([]);
+        setUnreadCount(0);
+      }
+    } else {
+      setNotifications([]);
+      setUnreadCount(0);
+    }
+  }, [user?.userId, notifKey, unreadKey]);
+
+  // 2. Fetch history and securely map read flags + fix UTC time zone parsing
+  useEffect(() => {
+    if (!user?.token || !user?.userId) return;
 
     fetch(`${BASE_URL}/notifications/history`, {
       headers: {
@@ -26,22 +46,42 @@ export function NotificationProvider({ children }) {
     })
       .then((res) => res.json())
       .then((history) => {
-        console.log("History IDs:", history.map(h => String(h.id)));
         setNotifications((prev) => {
-          console.log("Existing IDs:", prev.map(n => String(n.id)));
-          const existingIds = new Set(prev.map((n) => String(n.id)));
-          const newOnes = history.filter((h) => !existingIds.has(String(h.id)));
-          console.log("New ones:", newOnes.length);
-          if (newOnes.length === 0) return prev;
+          const existingMap = new Map(prev.map((n) => [String(n.id).toLowerCase(), n]));
+
+          const processedHistory = history.map((h) => {
+            const matched = existingMap.get(String(h.id).toLowerCase());
+            
+            // Timezone Fix: Ensure the string is treated as explicit UTC if it lacks an offset identifier
+            let cleanTimestamp = h.timestamp;
+            if (cleanTimestamp && !cleanTimestamp.endsWith("Z") && !cleanTimestamp.includes("+")) {
+              cleanTimestamp = `${cleanTimestamp}Z`;
+            }
+
+            return {
+              ...h,
+              timestamp: cleanTimestamp,
+              // Keep local user's read flag if seen before; otherwise default to API value or false
+              read: matched ? matched.read : (h.read !== undefined ? h.read : false),
+            };
+          });
+
+          const existingIds = new Set(prev.map((n) => String(n.id).toLowerCase()));
+          const newOnes = processedHistory.filter((h) => !existingIds.has(String(h.id).toLowerCase()));
+
+          if (newOnes.length === 0 && prev.length === processedHistory.length) return prev;
+
           const merged = [...prev, ...newOnes]
             .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
             .slice(0, 50);
+
           localStorage.setItem(notifKey, JSON.stringify(merged));
 
-          const newUnread = newOnes.filter(n => !n.read).length;
+          // Set the unread badge dot count precisely based on genuine unread new additions
+          const newUnread = newOnes.filter((n) => !n.read).length;
           if (newUnread > 0) {
-            setUnreadCount((prev) => {
-              const updated = prev + newUnread;
+            setUnreadCount((prevUnread) => {
+              const updated = prevUnread + newUnread;
               localStorage.setItem(unreadKey, String(updated));
               return updated;
             });
@@ -50,28 +90,17 @@ export function NotificationProvider({ children }) {
           return merged;
         });
       })
-      .catch(() => { });
-  }, [user?.token]);
-  const [notifications, setNotifications] = useState(() => {
-    try {
-      const saved = localStorage.getItem(notifKey);
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  const [unreadCount, setUnreadCount] = useState(() => {
-    try {
-      const saved = localStorage.getItem(unreadKey);
-      return saved ? parseInt(saved) : 0;
-    } catch {
-      return 0;
-    }
-  });
+      .catch(() => {});
+  }, [user?.token, user?.userId, BASE_URL, notifKey, unreadKey]);
 
   const addNotification = useCallback((notif) => {
     setNotifications((prev) => {
+      // De-duplication check
+      const isDuplicate = prev.some(
+        (n) => n.id === notif.id || (n.message === notif.message && Math.abs(new Date(n.timestamp) - new Date(notif.timestamp)) < 2000)
+      );
+      if (isDuplicate) return prev;
+
       const updated = [notif, ...prev].slice(0, 50);
       localStorage.setItem(notifKey, JSON.stringify(updated));
       return updated;
@@ -132,7 +161,7 @@ export function NotificationProvider({ children }) {
         id: crypto.randomUUID(),
         type: "status",
         title: "Statut modifié",
-        message: `[${data.serialNumber}] → ${METER_STATUS_LABELS[data.status] || data.status}`,
+        message: `[${data.serialNumber}] : ${METER_STATUS_LABELS[data.status] || data.status}`,
         parkmeterID: data.parkmeterID,
         timestamp: data.timestamp || new Date().toISOString(),
         read: false,
@@ -158,7 +187,8 @@ export function NotificationProvider({ children }) {
         id: crypto.randomUUID(),
         type: "order",
         title: "Nouvel ordre d'intervention",
-        message: `[${data.serialNumber}] ${INTERVENTION_TYPE_LABELS[data.interventionType] || data.interventionType}`,        parkmeterID: data.parkmeterID,
+        message: `[${data.serialNumber}] ${INTERVENTION_TYPE_LABELS[data.interventionType] || data.interventionType}`,
+        parkmeterID: data.parkmeterID,
         timestamp: data.timestamp || new Date().toISOString(),
         read: false,
         color: "#f59e0b",
@@ -193,9 +223,7 @@ export function NotificationProvider({ children }) {
   });
 
   return (
-    <NotificationContext.Provider
-      value={{ notifications, unreadCount, markAllRead, clearAll }}
-    >
+    <NotificationContext.Provider value={{ notifications, unreadCount, markAllRead, clearAll }}>
       {children}
     </NotificationContext.Provider>
   );

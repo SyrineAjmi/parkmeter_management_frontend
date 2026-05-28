@@ -1,7 +1,7 @@
 .card {
   background: #fff;
   border-radius: 14px;
-  padding: 20px 22px 18px;
+  padding: 14px 16px 12px;
   border: 1px solid #e5e7eb;
   border-top: 3px solid var(--accent, #0e64c8);
   display: flex;
@@ -49,8 +49,8 @@
 }
 
 .icon {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   background: color-mix(in srgb, var(--accent, #0e64c8) 12%, transparent);
   border-radius: 9px;
   display: flex;
@@ -71,9 +71,9 @@
 .footer {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   flex-wrap: wrap;
-  padding-top: 4px;
+  padding-top: 3px;
   border-top: 1px solid #f3f4f6;
   margin-top: 2px;
 }

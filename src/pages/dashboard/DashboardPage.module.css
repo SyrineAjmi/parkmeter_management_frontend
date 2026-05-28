@@ -9,16 +9,19 @@
 .kpiRow {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-bottom: 18px;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
 }
 
 /* ── Middle / bottom rows ── */
 .middleRow {
   display: grid;
   grid-template-columns: 3fr 2fr;
-  gap: 14px;
+  gap: 10px;
   margin-bottom: 18px;
+  flex: 1;          
+  min-height: 0; 
 }
 
 .bottomRow {
@@ -63,14 +66,14 @@
 }
 
 .cardTitle {
-  font-size: 0.82rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #485165;
-  text-transform: capitalize;
 }
 
 .miniTable {
   width: 100%;
+  height: auto;
   border-collapse: collapse;
   font-size: 0.85rem;
 }
@@ -78,11 +81,10 @@
 .miniTable th {
   text-align: left;
   padding: 9px 16px;
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #9ca3af;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  text-transform: capitalize;
   background: #f9fafb;
   border-bottom: 1px solid #f3f4f6;
 }
@@ -150,4 +152,9 @@
   .bottomRow {
     grid-template-columns: 1fr;
   }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

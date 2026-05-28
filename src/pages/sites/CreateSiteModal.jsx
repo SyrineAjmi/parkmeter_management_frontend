@@ -12,11 +12,11 @@ function authHeaders() {
   };
 }
 
-async function createSite(name, address, description) {
+async function createSite(name, address, description, latitude, longitude) {
   const res = await fetch(`${BASE_URL}/Sites`, {
     method: "POST",
     headers: authHeaders(),
-    body: JSON.stringify({ name, address, description }),
+    body: JSON.stringify({ name, address, description, latitude, longitude }),
   });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
@@ -29,6 +29,8 @@ export default function CreateSiteModal({ onClose, onCreated }) {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const overlayRef = useRef(null);
@@ -43,10 +45,24 @@ export default function CreateSiteModal({ onClose, onCreated }) {
       setError("Le nom du site est obligatoire");
       return;
     }
+    if (!description.trim()) {
+      setError("Le nom du site est obligatoire");
+      return;
+    }
+    if (!address.trim()) {
+      setError("L'adresse du site est obligatoire");
+      return;
+    }
+    if (!latitude || !longitude) {
+      setError("Les coordonnées GPS sont obligatoires");
+      return;
+    }
+
     setSubmitting(true);
     setError(null);
     try {
-      await createSite(name.trim(), address.trim(), description.trim());
+      await createSite(name.trim(), address.trim(), description.trim(), latitude ? parseFloat(latitude) : null,
+        longitude ? parseFloat(longitude) : null);
       onCreated();
       onClose();
     } catch (err) {
@@ -70,8 +86,8 @@ export default function CreateSiteModal({ onClose, onCreated }) {
           </div>
           <button className={styles.closeBtn} onClick={onClose}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18"/>
-              <line x1="6" y1="6" x2="18" y2="18"/>
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           </button>
         </div>
@@ -91,7 +107,7 @@ export default function CreateSiteModal({ onClose, onCreated }) {
           </div>
 
           <div className={styles.field}>
-            <label className={styles.label}>Adresse</label>
+            <label className={styles.label}>Adresse *</label>
             <input
               className={styles.input}
               type="text"
@@ -102,7 +118,7 @@ export default function CreateSiteModal({ onClose, onCreated }) {
           </div>
 
           <div className={styles.field}>
-            <label className={styles.label}>Description</label>
+            <label className={styles.label}>Description *</label>
             <textarea
               className={styles.textarea}
               placeholder="Description optionnelle..."
@@ -110,6 +126,40 @@ export default function CreateSiteModal({ onClose, onCreated }) {
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
             />
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Coordonnées GPS *</label>
+            <div style={{ display: "flex", gap: 8 }}>
+              <div style={{ flex: 1 }}>
+                <span className={styles.hint} style={{ marginBottom: 4, display: "block" }}>
+                  Latitude
+                </span>
+                <input
+                  className={styles.input}
+                  type="number"
+                  step="0.0001"
+                  placeholder="ex: 36.8190"
+                  value={latitude}
+                  onChange={(e) => setLatitude(e.target.value)}
+                  required
+                />
+              </div>
+              <div style={{ flex: 1 }}>
+                <span className={styles.hint} style={{ marginBottom: 4, display: "block" }}>
+                  Longitude
+                </span>
+                <input
+                  className={styles.input}
+                  type="number"
+                  step="0.0001"
+                  placeholder="ex: 10.1658"
+                  value={longitude}
+                  onChange={(e) => setLongitude(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
           </div>
 
           {error && (
@@ -127,7 +177,7 @@ export default function CreateSiteModal({ onClose, onCreated }) {
             <button
               type="submit"
               className={styles.submitBtn}
-              disabled={submitting || !name.trim()}
+              disabled={submitting || !name.trim() || !latitude || !longitude}
             >
               {submitting ? "Création..." : "Créer le site"}
             </button>

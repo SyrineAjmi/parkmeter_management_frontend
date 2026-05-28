@@ -7,8 +7,10 @@ import {
   fetchPendingOrders,
   fetchRevenueSummary,
   fetchRevenueByParkmeter,
+  fetchAllSites
 } from "../api/dashboard.api";
 import { useSignalR } from "./useSignalR";
+
 
 export function useDashboard(role) {
   const [overview, setOverview] = useState(null);
@@ -20,6 +22,7 @@ export function useDashboard(role) {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [sites, setSites] = useState([]);
 
   // ── individual refresh functions ──────────────────────────
 
@@ -84,23 +87,29 @@ export function useDashboard(role) {
       setParkmeters(pm);
 
       if (role === "GESTIONNAIRE_SYSTEME") {
-        const [ov, rev] = await Promise.all([
+        const [ov, rev, sts] = await Promise.all([
           fetchOverview(),
           fetchRevenueBySite(),
+          fetchAllSites(),         
         ]);
         setOverview(ov);
         setRevenueBySite(rev);
+        setSites(sts);         
       }
 
       if (role === "SUPERVISEUR") {
-        const [ov, al, ord] = await Promise.all([
+        const [ov, al, ord, sts] = await Promise.all([
           fetchOverview(),
           fetchAlertsSummary(),
           fetchPendingOrders(),
+          fetchAllSites(),        
+
         ]);
         setOverview(ov);
         setAlertsSummary(al);
         setOrders(ord);
+        setSites(sts);           
+
       }
 
       if (role === "RESPONSABLE_FINANCIER") {
@@ -113,6 +122,7 @@ export function useDashboard(role) {
         setRevenueSummary(summary);
         setRevenueByParkmeter(byPm);
       }
+      
 
     } catch (err) {
       setError(err.message);
@@ -215,5 +225,6 @@ export function useDashboard(role) {
     orders,
     loading,
     error,   
+    sites
   };
 }
