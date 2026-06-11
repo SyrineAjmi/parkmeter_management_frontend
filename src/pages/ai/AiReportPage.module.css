@@ -1,0 +1,305 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.pageTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.pageSubtitle {
+  font-size: 0.85rem;
+  margin: 4px 0 0;
+  color: #6b7280;
+}
+
+
+.exportBtn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 18px;
+    background: #fff;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.exportBtn:hover {
+    border-color: #0e64c8;
+    color: #0e64c8;
+    background: #eff6ff;
+}
+
+/* ── Controls ── */
+.controls {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px 20px;
+}
+
+.controlGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.controlLabel {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+}
+
+.select {
+    padding: 8px 12px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: #111827;
+    background: #f9fafb;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    min-width: 130px;
+    outline: none;
+}
+
+.select:focus {
+    border-color: #0e64c8;
+    background: #fff;
+}
+
+.generateBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 22px;
+    background: #0e64c8;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+    margin-left: auto;
+    height: 38px;
+}
+
+.generateBtn:hover:not(:disabled) {
+    background: #0b52a8;
+}
+
+.generateBtn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.btnSpinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Loading ── */
+.loadingState {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+    padding: 20px 24px;
+}
+
+.loadingPulse {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #0e64c8;
+    opacity: 0.15;
+    animation: pulse 1.2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.15; }
+    50% { transform: scale(1.15); opacity: 0.3; }
+}
+
+.loadingText p {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1e40af;
+}
+
+.loadingSub {
+    font-size: 0.8rem !important;
+    font-weight: 400 !important;
+    color: #3b82f6 !important;
+    margin-top: 2px;
+}
+
+/* ── Error ── */
+.errorBox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 0.875rem;
+    color: #dc2626;
+    font-weight: 500;
+}
+
+/* ── Report ── */
+.report {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+/* KPI strip */
+.kpiStrip {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: #0e64c8;
+    padding: 20px 28px;
+    position: relative;
+}
+
+.kpi {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 0 24px 0 0;
+}
+
+.kpiValue {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+}
+
+.kpiLabel {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.65);
+    text-transform: capitalize;
+    letter-spacing: 0.8px;
+    font-weight: 500;
+}
+
+.kpiDivider {
+    width: 1px;
+    height: 36px;
+    background: rgba(255,255,255,0.2);
+    margin: 0 24px 0 0;
+}
+
+.kpiBadge {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.25);
+}
+
+/* Report body */
+.reportBody {
+    padding: 28px 32px;
+}
+
+.reportMeta {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.reportMetaText {
+    font-size: 0.78rem;
+    color: #9ca3af;
+}
+
+.sections {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sectionTitle {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #2b3139;
+    text-transform:  capitalize;
+    letter-spacing: 1.2px;
+    border-left: 3px solid #2b3139;
+    padding-left: 10px;
+    margin-bottom: 4px;
+}
+
+.sectionLine {
+    font-size: 0.9rem;
+    color: #374151;
+    line-height: 1.75;
+}
+
+.noData {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 48px;
+    color: #6b7280;
+    font-size: 14px;
+    text-align: center;
+}
+
+.noDataSub {
+    font-size: 12px;
+    color: #9ca3af;
+}

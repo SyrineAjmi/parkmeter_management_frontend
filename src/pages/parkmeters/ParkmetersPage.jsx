@@ -73,7 +73,7 @@ export default function ParkmetersPage() {
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [siteFilter, setSiteFilter] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 4;
+  const pageSize = 6;
   const isAgent = user?.role === "AGENT_INSTALLATION";
   const [showAddModal, setShowAddModal] = useState(false);
 
@@ -151,7 +151,7 @@ export default function ParkmetersPage() {
         {/* Header */}
         <div className={styles.header}>
           <div>
-            <h1 className={styles.title}>Parcmètres</h1>
+            <h1 className={styles.title}>Liste des parcmètres</h1>
             <p className={styles.subtitle}>
               {parkmeters.length} parcmètre{parkmeters.length !== 1 ? "s" : ""}{" "}—{" "}
               <span className={styles.liveCount}>{inServiceCount} en service</span>
@@ -159,7 +159,7 @@ export default function ParkmetersPage() {
           </div>
           {isAgent && (
             <button className={styles.createBtn} onClick={() => setShowAddModal(true)}>
-              + Nouveau parcmètre
+              + Enrgistrer  Nouveau Parcmètre
             </button>
           )}
           {showAddModal && (
@@ -222,7 +222,7 @@ export default function ParkmetersPage() {
                     <th>Statut</th>
                     <th>Caisse</th>
                     <th>Ajouté le</th>
-                    {isGestionnaire && <th>Détails</th>}
+                    <th>Détails</th>
                   </tr>
                 </thead>
                 <tbody>

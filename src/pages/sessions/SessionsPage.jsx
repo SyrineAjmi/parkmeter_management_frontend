@@ -101,14 +101,13 @@ export default function SessionsPage() {
       .finally(() => setLoading(false));
   }, [statusFilter, fromDate, toDate, search]);
 
-  useEffect(() => {
-    setCurrentPage(1);
-    load(1);
-  }, [statusFilter, fromDate, toDate, search]);
+useEffect(() => {
+  load(currentPage);
+}, [currentPage, statusFilter, fromDate, toDate, search]);
 
-  useEffect(() => {
-    if (currentPage > 1) load(currentPage);
-  }, [currentPage]);
+useEffect(() => {
+  setCurrentPage(1);
+}, [statusFilter, fromDate, toDate, search]);
 
   // ── Real-time ─────────────────────────────────────────────
   // SessionClosed: { ParkmeterID, TotalAmount, TotalTransactions, Timestamp }
@@ -136,14 +135,6 @@ export default function SessionsPage() {
 
   // ── Filtering ─────────────────────────────────────────────
 
-  const filtered = sessions.filter((s) => {
-    const matchStatus = statusFilter === "ALL" || s.status === statusFilter;
-    const matchSearch = !search ||
-      (s.parkmeterSerial || "").toLowerCase().includes(search.toLowerCase());
-    const matchFrom = !fromDate || new Date(s.startDateTime) >= new Date(fromDate);
-    const matchTo = !toDate || new Date(s.startDateTime) <= new Date(toDate + "T23:59:59");
-    return matchStatus && matchSearch && matchFrom && matchTo;
-  });
 
   const activeCount = sessions.filter((s) => s.status === "ACTIVE").length;
   const totalRevenue = sessions.reduce((sum, s) => sum + s.totalAmount, 0);

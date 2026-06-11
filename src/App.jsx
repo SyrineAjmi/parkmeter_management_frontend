@@ -12,6 +12,8 @@ import InterventionOrdersPage from "./pages/intervention-orders/InterventionOrde
 import SessionsPage from "./pages/sessions/SessionsPage";
 import TransactionsPage from "./pages/transactions/TransactionsPage";
 import ParkmeterDetailPage from "./pages/parkmeters/ParkmeterDetailPage";
+import SettingsPage from "./pages/settings/SettingsPage";
+import AiReportPage from "./pages/ai/AiReportPage";
 
 
 const ComingSoon = ({ page }) => (
@@ -74,7 +76,13 @@ function AppRoutes() {
 
             <Route path="/settings" element={
                 <RoleProtectedRoute path="/settings">
-                    <ComingSoon page="Paramètres" />
+                    <SettingsPage />
+                </RoleProtectedRoute>
+            } />
+
+            <Route path="/ai-report" element={
+                <RoleProtectedRoute path="/ai-report">
+                    <AiReportPage />
                 </RoleProtectedRoute>
             } />
 

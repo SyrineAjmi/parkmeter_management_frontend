@@ -37,6 +37,7 @@ export const ROLE_NAV_ACCESS = {
     "/sessions",
     "/transactions",
     "/settings",
+    "/ai-report"
   ],
 
   AGENT_INSTALLATION: [

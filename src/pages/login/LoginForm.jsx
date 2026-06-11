@@ -90,7 +90,7 @@ export default function LoginForm({ onSubmit, loading, error }) {
         />
       </div>
 
-      <div className={styles.row}>
+      {/* <div className={styles.row}>
         <label className={styles.checkLabel}>
           <input
             type="checkbox"
@@ -103,7 +103,7 @@ export default function LoginForm({ onSubmit, loading, error }) {
         <button type="button" className={styles.forgotLink}>
           Mot de passe oublié ?
         </button>
-      </div>
+      </div> */}
 
       {error && (
         <div className={styles.errorBanner} role="alert">

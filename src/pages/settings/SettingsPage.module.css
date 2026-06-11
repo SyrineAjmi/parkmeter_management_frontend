@@ -1,0 +1,372 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 900px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.pageTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.pageSubtitle {
+  font-size: 0.85rem;
+  margin: 4px 0 0;
+  color: #6b7280;
+}
+
+/* ── Profile Banner ── */
+.profileBanner {
+  background: #0e64c8;
+  border-radius: 16px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.profileBanner::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+}
+
+.profileBanner::after {
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  right: 80px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+
+.profileAvatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  border: 3px solid rgba(255,255,255,0.35);
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 1;
+}
+
+.profileName {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.profileEmail {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.7);
+}
+
+.profileRole {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  width: fit-content;
+  margin-top: 2px;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+
+.profileStats {
+  margin-left: auto;
+  display: flex;
+  gap: 32px;
+  z-index: 1;
+}
+
+.profileStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.profileStatValue {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.profileStatLabel {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.65);
+  text-transform: capitalize;
+  text-align: center;
+}
+
+/* ── Grid layout ── */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.gridFull {
+  grid-column: 1 / -1;
+}
+
+/* ── Card ── */
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.cardHeader {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f3f4f6;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cardIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #0e64c8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cardTitleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #212a3e;
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.cardSubtitle {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+.cardBody {
+  padding: 20px;
+}
+
+/* ── Info rows (about section) ── */
+.infoGrid {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.infoRow:last-child {
+  border-bottom: none;
+}
+
+.infoLabel {
+  font-size: 0.82rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.infoValue {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ── Status ── */
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Tech badges ── */
+.techBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.techBadge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #0e64c8;
+  border: 1px solid #bfdbfe;
+}
+
+/* ── Password form ── */
+.passwordForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #383f4c;
+  text-transform: capitalize;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding: 9px 36px 9px 12px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input:focus {
+  border-color: #0e64c8;
+  box-shadow: 0 0 0 3px rgba(14,100,200,0.08);
+}
+
+.inputError {
+  border-color: #ef4444 !important;
+}
+
+.eyeBtn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.eyeBtn:hover { color: #374151; }
+
+.hint {
+  font-size: 0.75rem;
+  color: #f59e0b;
+  font-weight: 500;
+}
+
+.hintError {
+  font-size: 0.75rem;
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.errorBanner {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  font-size: 0.82rem;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+.successBanner {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  font-size: 0.82rem;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.submitBtn {
+  padding: 9px 20px;
+  background: #0e64c8;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  width: fit-content;
+  transition: background 0.15s;
+}
+
+.submitBtn:hover:not(:disabled) { background: #0952a8; }
+.submitBtn:disabled { background: #93c5fd; cursor: not-allowed; }

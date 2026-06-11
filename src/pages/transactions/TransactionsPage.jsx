@@ -101,14 +101,14 @@ export default function TransactionsPage() {
     fetchAllParkmeters().then(setParkmeters).catch(() => { });
   }, []);
 
-  useEffect(() => {
-    setCurrentPage(1);
-    load(1);
-  }, [statusFilter, fromDate, toDate, search]);
 
   useEffect(() => {
-    if (currentPage > 1) load(currentPage);
-  }, [currentPage]);
+  load(currentPage);
+}, [currentPage, statusFilter, fromDate, toDate, search]);
+
+useEffect(() => {
+  setCurrentPage(1);
+}, [statusFilter, fromDate, toDate, search]);
 
   // ── Real-time ─────────────────────────────────────────────
   // NewTransaction: { ParkmeterID, Amount, Status, Timestamp }
