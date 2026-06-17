@@ -30,27 +30,16 @@ const STATUS_COLORS = {
 };
 
 async function fetchTransactions({ page = 1, status = "ALL", from = "", to = "", search = "" }) {
-  // priority: search > status > date > default paginated
-  if (search) {
-    const res = await fetch(`${BASE_URL}/Transactions/filter/serial?serial=${search}`, { headers: authHeaders() });
-    if (!res.ok) throw new Error(`Erreur serveur (${res.status})`);
-    return { data: await res.json(), totalPages: 1 };
-  }
-  if (status !== "ALL") {
-    const res = await fetch(`${BASE_URL}/Transactions/filter?status=${status}`, { headers: authHeaders() });
-    if (!res.ok) throw new Error(`Erreur serveur (${res.status})`);
-    return { data: await res.json(), totalPages: 1 };
-  }
-  if (from || to) {
-    const params = new URLSearchParams();
-    if (from) params.append("from", from);
-    if (to) params.append("to", to);
-    const res = await fetch(`${BASE_URL}/Transactions/filter/date?${params}`, { headers: authHeaders() });
-    if (!res.ok) throw new Error(`Erreur serveur (${res.status})`);
-    return { data: await res.json(), totalPages: 1 };
-  }
-  // no filters — paginated
-  const res = await fetch(`${BASE_URL}/Transactions?page=${page}&pageSize=6`, { headers: authHeaders() });
+  const params = new URLSearchParams({ page, pageSize: 6 });
+
+  if (search) params.append("serial", search);
+  if (status !== "ALL") params.append("status", status);
+  if (from) params.append("from", from);
+  if (to) params.append("to", to);
+
+  const res = await fetch(`${BASE_URL}/Transactions?${params}`, {
+    headers: authHeaders()
+  });
   if (!res.ok) throw new Error(`Erreur serveur (${res.status})`);
   return res.json();
 }

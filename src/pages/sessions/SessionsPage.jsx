@@ -18,25 +18,16 @@ function authHeaders() {
 }
 
 async function fetchSessions({ page = 1, status = "ALL", from = "", to = "", search = "" }) {
-  if (search) {
-    const res = await fetch(`${BASE_URL}/Sessions/filter/serial?serial=${search}`, { headers: authHeaders() });
-    if (!res.ok) throw new Error(`Erreur serveur (${res.status})`);
-    return { data: await res.json(), totalPages: 1 };
-  }
-  if (status !== "ALL") {
-    const res = await fetch(`${BASE_URL}/Sessions/filter/status?status=${status}`, { headers: authHeaders() });
-    if (!res.ok) throw new Error(`Erreur serveur (${res.status})`);
-    return { data: await res.json(), totalPages: 1 };
-  }
-  if (from || to) {
-    const params = new URLSearchParams();
-    if (from) params.append("from", from);
-    if (to) params.append("to", to);
-    const res = await fetch(`${BASE_URL}/Sessions/filter/date?${params}`, { headers: authHeaders() });
-    if (!res.ok) throw new Error(`Erreur serveur (${res.status})`);
-    return { data: await res.json(), totalPages: 1 };
-  }
-  const res = await fetch(`${BASE_URL}/Sessions?page=${page}&pageSize=6`, { headers: authHeaders() });
+  const params = new URLSearchParams({ page, pageSize: 6 });
+
+  if (search) params.append("serial", search);
+  if (status !== "ALL") params.append("status", status);
+  if (from) params.append("from", from);
+  if (to) params.append("to", to);
+
+  const res = await fetch(`${BASE_URL}/Sessions?${params}`, {
+    headers: authHeaders()
+  });
   if (!res.ok) throw new Error(`Erreur serveur (${res.status})`);
   return res.json();
 }
