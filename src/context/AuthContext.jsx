@@ -13,7 +13,7 @@ const [user, setUser] = useState(() => {
     const decoded = JSON.parse(atob(userData.token.split('.')[1]));
     if (decoded.exp * 1000 < Date.now()) {
       localStorage.removeItem("parkmeter_user");
-      return null;
+      return null; 
     }
     return userData;
   } catch {
