@@ -117,14 +117,13 @@ export default function InterventionOrdersPage() {
   useEffect(() => { setCurrentPage(1); }, [statusFilter, typeFilter]);
 
 
-  // ── Real-time ─────────────────────────────────────────────
   // InterventionOrderCreated: { OperatorId, ParkmeterID, OrderId, Timestamp }
   // InterventionOrderCompleted: { OrderId, ParkmeterID, CompletedAt }
 
   useSignalR({
     InterventionOrderCreated: useCallback((data) => {
-      // for superviseur: reload to get full order data
-      // for opérateur: only reload if this order is for them
+      //  sup: reload to get full order data
+      //  op: only reload if this order is for them
       if (isSuperviseur || data.operatorId === user?.userId) {
         const fetcher = isSuperviseur
           ? fetchAllOrders()
@@ -134,7 +133,6 @@ export default function InterventionOrdersPage() {
     }, [isSuperviseur, user?.userId]),
 
     InterventionOrderCompleted: useCallback((data) => {
-      // data.orderId, data.completedAt — update in place
       setOrders((prev) =>
         prev.map((o) =>
           o.id === data.orderId
@@ -145,7 +143,7 @@ export default function InterventionOrdersPage() {
     }, []),
   });
 
-  // ── Filtering ─────────────────────────────────────────────
+  // filtre
 
   const filtered = orders.filter((o) => {
     const matchStatus = statusFilter === "ALL" || o.status === statusFilter;
@@ -216,7 +214,7 @@ export default function InterventionOrdersPage() {
 
         {showModal && (
           <CreateOrderModal
-            parkmeters={parkmeters}  // you need to load parkmeters too
+            parkmeters={parkmeters}  
             onClose={() => setShowModal(false)}
             onCreated={load}
           />

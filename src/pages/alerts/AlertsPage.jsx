@@ -90,13 +90,11 @@ export default function AlertsPage() {
   useEffect(() => { setCurrentPage(1); }, [priorityFilter, statusFilter]);
   useEffect(() => { load(); }, [load]);
 
-  // ── Real-time ─────────────────────────────────────────────
   // NewAlert payload:    { ParkmeterID, AlertType, Priority, Timestamp }
   // AlertResolved payload: { AlertId, ParkmeterID, Timestamp }
 
   useSignalR({
     NewAlert: useCallback(() => {
-      // payload has no alertId or serial — reload to get full data from DB
       fetchAlerts().then(setAlerts).catch(() => { });
     }, []),
 
@@ -105,7 +103,6 @@ export default function AlertsPage() {
     }, []),
   });
 
-  // ── Manual resolve ────────────────────────────────────────
 
   async function handleResolve(alertId) {
     setResolving(alertId);
@@ -126,7 +123,7 @@ export default function AlertsPage() {
     }
   }
 
-  // ── Filtering ─────────────────────────────────────────────
+  // filtre
 
   const filtered = alerts.filter((a) => {
     const matchPriority = priorityFilter === "ALL" || a.priority === priorityFilter;

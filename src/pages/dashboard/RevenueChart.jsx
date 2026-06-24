@@ -34,7 +34,7 @@ export default function RevenueChart({ data = [] }) {
 
   const totalRevenue = chartData.reduce((sum, d) => sum + d.revenus, 0);
 
-  // dynamic bar size based on number of sites
+  // dynamic bar
   const barSize = Math.max(16, Math.min(40, Math.floor(200 / (chartData.length || 1))));
 
   return (

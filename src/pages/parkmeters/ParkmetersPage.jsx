@@ -95,7 +95,6 @@ export default function ParkmetersPage() {
 
 
 
-  // ── Real-time ─────────────────────────────────────────────
 
   useSignalR({
     StatusChanged: useCallback((data) => {
@@ -123,7 +122,7 @@ export default function ParkmetersPage() {
     }, []),
   });
 
-  // ── Filtering ─────────────────────────────────────────────
+  // fitlre
 
   const filtered = parkmeters.filter((pm) => {
     const matchSearch = pm.serialNumber

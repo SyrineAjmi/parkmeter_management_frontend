@@ -5,14 +5,14 @@ import "leaflet/dist/leaflet.css";
 import { METER_STATUS_COLORS, METER_STATUS_LABELS } from "../../constants/meterStatus";
 import styles from "./DashboardMap.module.css";
 
-// fix leaflet default marker icon
+//leaflet dflt marker icon
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({ iconUrl: icon, shadowUrl: iconShadow });
 
-// custom colored marker per site status
+// custom colored marker
 function createSiteIcon(color) {
     return L.divIcon({
         className: "",
@@ -69,7 +69,7 @@ function ParkmeterMiniCard({ parkmeter }) {
 export default function DashboardMap({ sites, parkmeters }) {
     const [map, setMap] = useState(null);
 
-    // group parkmeters by siteId
+    // pm by siteId
     const parkmetersBySite = parkmeters.reduce((acc, pm) => {
         if (!acc[pm.siteId]) acc[pm.siteId] = [];
         acc[pm.siteId].push(pm);
@@ -78,7 +78,7 @@ export default function DashboardMap({ sites, parkmeters }) {
 
     const sitesWithCoords = sites.filter((s) => s.latitude && s.longitude);
 
-    // default center — Tunisia
+    // centre tunisie
     const center = sitesWithCoords.length > 0
         ? [sitesWithCoords[0].latitude, sitesWithCoords[0].longitude]
         : [36.8400, 10.2000];

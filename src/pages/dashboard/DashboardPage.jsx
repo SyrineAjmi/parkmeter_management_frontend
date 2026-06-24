@@ -49,7 +49,7 @@ function StatDot({ color, label, value }) {
     );
 }
 
-// ─── GESTIONNAIRE view ─────────────────────────────────────
+//  GEST view 
 function GestionnaireView({ overview, revenueBySite, parkmeters, sites }) {
     return (
         <>
@@ -79,7 +79,7 @@ function GestionnaireView({ overview, revenueBySite, parkmeters, sites }) {
     );
 }
 
-// ─── SUPERVISEUR view ──────────────────────────────────────
+//  SUP view 
 function SuperviseurView({ overview, alertsSummary, orders, parkmeters, sites }) {
     return (
         <>
@@ -109,7 +109,7 @@ function SuperviseurView({ overview, alertsSummary, orders, parkmeters, sites })
     );
 }
 
-// ─── RESPONSABLE FINANCIER view ────────────────────────────
+//  RESP FIN view 
 function FinancierView({ revenueSummary, revenueBySite, revenueByParkmeter }) {
     const totalRevenue = revenueSummary?.totalRevenue ?? 0;
     const completedTx = revenueSummary?.completedTransactions ?? 0;
@@ -282,7 +282,7 @@ function LiveTransactionsFeed() {
     </div>
   );
 }
-// ─── AGENT INSTALLATION view ───────────────────────────────
+//  AGENT view 
 function AgentView({ parkmeters }) {
     return (
         <div className={styles.middleRow}>
@@ -293,7 +293,7 @@ function AgentView({ parkmeters }) {
     );
 }
 
-// ─── MAIN PAGE ─────────────────────────────────────────────
+// MAIN  
 export default function DashboardPage() {
     const { user } = useAuth();
     const role = user?.role;

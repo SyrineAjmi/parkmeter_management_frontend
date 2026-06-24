@@ -104,7 +104,7 @@ export default function App() {
 function NotificationProviderWrapper() {
     const { isAuthenticated } = useAuth();
 
-    // Only start SignalR connection when logged in
+    // start SignalR connection when logged in
     if (!isAuthenticated) {
         return (
             <Routes>

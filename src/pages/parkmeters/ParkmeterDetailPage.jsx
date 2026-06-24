@@ -8,7 +8,7 @@ import { METER_STATUS_COLORS, METER_STATUS_LABELS } from "../../constants/meterS
 import { ALERT_TYPE_LABELS, ALERT_PRIORITY_COLORS, ALERT_PRIORITY_LABELS } from "../../constants/alertTypes";
 import styles from "./ParkmeterDetailPage.module.css";
 import ConfigModal from "./Configmodal";
-import { formatDateTime } from "../../utils/dateUtils";
+import { formatDateTime, toUTC } from "../../utils/dateUtils";
 import StatusConfirmModal from "../../components/ui/StatusConfirmModal";
 
 
@@ -70,7 +70,7 @@ const ALLOWED_TRANSITIONS = {
 
 
 function formatDuration(start) {
-  const mins = Math.floor((Date.now() - new Date(start)) / 60000);
+  const mins = Math.floor((Date.now() - new Date(toUTC(start))) / 60000);
   if (mins < 60) return `${mins} min`;
   const h = Math.floor(mins / 60);
   const m = mins % 60;
@@ -114,7 +114,6 @@ export default function ParkmeterDetailPage() {
 
   useEffect(() => { load(); }, [load]);
 
-  // ── Real-time ─────────────────────────────────────────────
 
   useSignalR({
     StatusChanged: useCallback((evt) => {
@@ -148,7 +147,7 @@ export default function ParkmeterDetailPage() {
     }, [id]),
   });
 
-  // ── Actions ───────────────────────────────────────────────
+  //  Actions 
 
   async function handleStatusChange(e) {
     const newStatus = e.target.value;
@@ -263,7 +262,7 @@ export default function ParkmeterDetailPage() {
         {/* Grid */}
         <div className={styles.grid}>
 
-          {/* Actions card — gestionnaire only */}
+          {/* gestionnaire only */}
           {(isGestionnaire || isAgent) && (
             <div className={styles.card}>
               <div className={styles.cardHeader}>

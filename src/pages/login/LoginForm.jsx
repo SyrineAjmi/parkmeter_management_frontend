@@ -3,7 +3,7 @@ import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 import styles from "./LoginForm.module.css";
 
-// Simple SVG icons inline to avoid icon library dependency
+//  SVG icons
 const EmailIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -33,12 +33,7 @@ const EyeOffIcon = () => (
   </svg>
 );
 
-/**
- * Pure presentational login form.
- * @param {(email, password) => void} onSubmit
- * @param {boolean} loading
- * @param {string|null} error
- */
+
 export default function LoginForm({ onSubmit, loading, error }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -89,21 +84,6 @@ export default function LoginForm({ onSubmit, loading, error }) {
           autoComplete="current-password"
         />
       </div>
-
-      {/* <div className={styles.row}>
-        <label className={styles.checkLabel}>
-          <input
-            type="checkbox"
-            className={styles.checkbox}
-            checked={rememberMe}
-            onChange={(e) => setRememberMe(e.target.checked)}
-          />
-          Se souvenir de moi
-        </label>
-        <button type="button" className={styles.forgotLink}>
-          Mot de passe oublié ?
-        </button>
-      </div> */}
 
       {error && (
         <div className={styles.errorBanner} role="alert">

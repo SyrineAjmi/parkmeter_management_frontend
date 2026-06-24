@@ -4,7 +4,7 @@ import { useSignalR } from "../../hooks/useSignalR";
 import styles from "./Sessionspage.module.css";
 import Pagination from "../../components/ui/Pagination/Pagination";
 import { fetchAllParkmeters } from "../../api/dashboard.api";
-import { formatDateTime } from "../../utils/dateUtils";
+import { formatDateTime,toUTC } from "../../utils/dateUtils";
 
 //const BASE_URL = "https://localhost:7016/api";
 const BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
@@ -55,8 +55,8 @@ function StatusBadge({ status }) {
 
 
 function formatDuration(start, end) {
-  const from = new Date(start);
-  const to = end ? new Date(end) : new Date();
+  const from = new Date(toUTC(start));
+  const to = end ?  new Date(toUTC(end)) : new Date();
   const mins = Math.floor((to - from) / 60000);
   if (mins < 60) return `${mins} min`;
   const h = Math.floor(mins / 60);
@@ -100,9 +100,6 @@ useEffect(() => {
   setCurrentPage(1);
 }, [statusFilter, fromDate, toDate, search]);
 
-  // ── Real-time ─────────────────────────────────────────────
-  // SessionClosed: { ParkmeterID, TotalAmount, TotalTransactions, Timestamp }
-  // NewTransaction: { ParkmeterID, Amount, Status, Timestamp }
 
   useSignalR({
     SessionClosed: useCallback(() => {
@@ -124,7 +121,7 @@ useEffect(() => {
     }, []),
   });
 
-  // ── Filtering ─────────────────────────────────────────────
+  // Filtre
 
 
   const activeCount = sessions.filter((s) => s.status === "ACTIVE").length;

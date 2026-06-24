@@ -100,7 +100,6 @@ useEffect(() => {
   setCurrentPage(1);
 }, [statusFilter, fromDate, toDate, search]);
 
-  // ── Real-time ─────────────────────────────────────────────
   // NewTransaction: { ParkmeterID, Amount, Status, Timestamp }
 
   useSignalR({
@@ -109,7 +108,7 @@ useEffect(() => {
     }, [currentPage, load]),
   });
 
-  // ── Filtering ─────────────────────────────────────────────
+  // filtre
 
 
   const totalRevenue = transactions
