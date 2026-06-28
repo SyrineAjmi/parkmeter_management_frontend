@@ -34,8 +34,6 @@ async function createOrder(parkmeterId, operatorId, type) {
 }
 
 const TYPE_OPTIONS = [
-  { value: "CASH_COLLECTION", label: "Collecte caisse" },
-  { value: "PAPER_REFILL",    label: "Recharge papier" },
   { value: "HARDWARE_REPAIR", label: "Réparation matérielle" },
 ];
 
@@ -90,7 +88,7 @@ export default function CreateOrderModal({ parkmeters, onClose, onCreated }) {
         {/* Header */}
         <div className={styles.header}>
           <div>
-            <h2 className={styles.title}>Nouvel ordre d'intervention</h2>
+            <h2 className={styles.title}>Nouvel ordre de Réparation matérielle   </h2>
             <p className={styles.subtitle}>
               Créer et assigner une intervention à un opérateur
             </p>

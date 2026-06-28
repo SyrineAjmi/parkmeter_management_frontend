@@ -184,7 +184,7 @@ export default function InterventionOrdersPage() {
               className={styles.createBtn}
               onClick={() => setShowModal(true)}
             >
-              + Nouvel ordre
+              + Ordre de réparation matérielle
             </button>
           )}
         </div>
