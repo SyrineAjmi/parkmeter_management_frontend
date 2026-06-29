@@ -15,16 +15,24 @@ const [user, setUser] = useState(() => {
       localStorage.removeItem("parkmeter_user");
       return null; 
     }
-    return userData;
+    return {
+      ...userData,
+      siteId: decoded.siteId || null,
+    };
   } catch {
     return null;
   }
 });
 
-  const signIn = useCallback((userData) => {
-    localStorage.setItem("parkmeter_user", JSON.stringify(userData));
-    setUser(userData);
-  }, []);
+const signIn = useCallback((userData) => {
+  const decoded = JSON.parse(atob(userData.token.split('.')[1]));
+  const enriched = {
+    ...userData,
+    siteId: decoded.siteId || null,
+  };
+  localStorage.setItem("parkmeter_user", JSON.stringify(enriched));
+  setUser(enriched);
+}, []);
 
   const signOut = useCallback(() => {
     const stored = localStorage.getItem("parkmeter_user");

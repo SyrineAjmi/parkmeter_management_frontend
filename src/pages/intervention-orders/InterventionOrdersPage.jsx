@@ -116,6 +116,17 @@ export default function InterventionOrdersPage() {
 
   useEffect(() => { setCurrentPage(1); }, [statusFilter, typeFilter]);
 
+  const [mySite, setMySite] = useState(null);
+
+useEffect(() => {
+    if (!isSuperviseur && user?.siteId) {
+        fetch(`${BASE_URL}/Sites/${user.siteId}`, { headers: authHeaders() })
+            .then(r => r.json())
+            .then(setMySite)
+            .catch(() => {});
+    }
+}, [isSuperviseur, user?.siteId]);
+
 
   // InterventionOrderCreated: { OperatorId, ParkmeterID, OrderId, Timestamp }
   // InterventionOrderCompleted: { OrderId, ParkmeterID, CompletedAt }
@@ -169,6 +180,11 @@ export default function InterventionOrdersPage() {
             <h1 className={styles.title}>
               {isSuperviseur ? "Ordres d'intervention" : "Mes interventions"}
             </h1>
+            {!isSuperviseur && mySite && (
+    <p style={{ fontSize: "0.8rem", color: "#0f4186", marginTop: 2 }}>
+        Site : <strong>{mySite.name}</strong>
+    </p>
+)}
             <p className={styles.subtitle}>
               {pendingCount > 0 ? (
                 <span className={styles.pendingCount}>

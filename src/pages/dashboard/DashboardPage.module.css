@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+   min-height: 100vh
 }
 
 
@@ -16,12 +17,16 @@
 
 /* ── Middle / bottom rows ── */
 .middleRow {
+  flex: 1;
   display: grid;
   grid-template-columns: 3fr 2fr;
   gap: 10px;
-  margin-bottom: 18px;
-  flex: 1;          
-  min-height: 0; 
+  min-height: 0;
+}
+
+.middleRow > * {
+  min-height: 0;
+  height: 100%;
 }
 
 .bottomRow {

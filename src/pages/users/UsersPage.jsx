@@ -94,6 +94,18 @@ export default function UsersPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5;
 
+  const [sites, setSites] = useState([]);
+
+  useEffect(() => {
+    fetch(`${BASE_URL}/Sites`, { headers: authHeaders() })
+      .then(r => r.json())
+      .then(setSites)
+      .catch(() => { });
+  }, []);
+
+  const getSiteName = (siteId) =>
+    sites.find(s => s.id === siteId)?.name ?? "—";
+
 
   const load = useCallback(() => {
     setError(null);
@@ -109,6 +121,7 @@ export default function UsersPage() {
   }, [load]);
 
   useEffect(() => { setCurrentPage(1); }, [search, roleFilter]);
+
 
 
   const filtered = users.filter((u) => {
@@ -184,6 +197,7 @@ export default function UsersPage() {
                       <th>Email</th>
                       <th>Rôle</th>
                       <th>Statut</th>
+                      <th>Site</th>
                       <th>Créé le</th>
                       <th>Actions</th>
                     </tr>
@@ -202,6 +216,9 @@ export default function UsersPage() {
                         <td className={styles.muted}>{user.email}</td>
                         <td><RoleBadge role={user.role} /></td>
                         <td><StatusBadge isActive={user.isActive} /></td>
+                        <td className={styles.muted}>
+                          {user.role === "OPERATEUR" ? getSiteName(user.siteId) : "—"}
+                        </td>
                         <td className={styles.muted}>{formatDate(user.createdAt)}</td>
                         <td>
                           <div className={styles.rowActions}>
@@ -235,24 +252,24 @@ export default function UsersPage() {
           onPageChange={setCurrentPage}
         />
         {editingUser && (
-  <EditUserModal
-    user={editingUser}
-    onClose={() => setEditingUser(null)}
-    onUpdated={load}
-  />
-)}
+          <EditUserModal
+            user={editingUser}
+            onClose={() => setEditingUser(null)}
+            onUpdated={load}
+          />
+        )}
 
-{deletingUser && (
-  <ConfirmDeleteModal
-    title="Supprimer l'utilisateur"
-    message={`Êtes-vous sûr de vouloir supprimer "${deletingUser.name}" ? Cette action est irréversible.`}
-    onClose={() => setDeletingUser(null)}
-    onConfirm={async () => {
-      await deleteUser(deletingUser.id);
-      load();
-    }}
-  />
-)}
+        {deletingUser && (
+          <ConfirmDeleteModal
+            title="Supprimer l'utilisateur"
+            message={`Êtes-vous sûr de vouloir supprimer "${deletingUser.name}" ? Cette action est irréversible.`}
+            onClose={() => setDeletingUser(null)}
+            onConfirm={async () => {
+              await deleteUser(deletingUser.id);
+              load();
+            }}
+          />
+        )}
       </div>
     </AppLayout>
   );
